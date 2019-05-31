@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
-    <title>Pebutra, Your Personal Budget Tracker! | Login</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+    <title>{{ title }}</title>
   <style>
     .right-buttons {
       text-align: right;
@@ -15,11 +15,16 @@
     }
 
   </style>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    let socket = io();
+  
+  </script>
   </head>
   <body>
       <div class="container">
             <div class="row">
-              <div class="col-4 mx-auto"><img class="img-fluid" src="./img/logo.png" /></div>
+              <div class="col-4 mx-auto"><img class="img-fluid" src="assets/img/logo.png" /></div>
             </div>
             <div class="row">
               <div class="col-sm-6 mx-auto">
@@ -47,8 +52,8 @@
               </div>
             </div> 
           </div>
-    <script src="../bootstrap-js-lib/jquery-3.3.1.slim.min.js" ></script>
-    <script src="../bootstrap-js-lib/popper.min.js"></script>
-    <script src="../bootstrap-js-lib/bootstrap.min.js"></script>
+    <script src="assets/js_libs/jquery-3.3.1.slim.min.js" ></script>
+    <script src="assets/js_libs/popper.min.js"></script>
+    <script src="assets/js_libs/bootstrap.min.js"></script>
   </body>
 </html>
