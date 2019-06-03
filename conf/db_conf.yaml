@@ -1,0 +1,6 @@
+# Database Settings
+host : "localhost"
+username: "cem"
+password : "123456"
+database : "PEBUTRA"
+connectionPoolLimit : 10

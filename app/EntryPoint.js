@@ -5,8 +5,6 @@ const express_app = express();
 const mustacheExpress = require('mustache-express');
 const http = require('http').Server(express_app);
 const io = require('socket.io')(http);
-const path = require('path');
-const url = require('url');
 const morgan = require('morgan');
 
 const PORT = 3000;
@@ -22,6 +20,10 @@ express_app.use(morgan('short'));
 
 express_app.get('/', (req, res) => {
     res.render('login', { title: 'Pebutra, Your Personal Budget Tracker! | Login' });
+});
+
+express_app.post('/loginprocess.html', (req, res) => {
+    res.render('');
 });
 
 io.on('connection', (socket) => {
@@ -46,6 +48,5 @@ function EntryPoint() {
         mainWindow.focus();
     });
 }
-
 http.listen(PORT, () => { console.log(`ExpressJS started. URL: ::1:${PORT}`) });
 app.on('ready', EntryPoint);

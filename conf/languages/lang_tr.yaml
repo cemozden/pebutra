@@ -1,5 +1,5 @@
-name : "tr"
 fullName : "Türkçe"
+alias : "tr"
 dateFormat : "dd.MM.yyyy"
 locale : "tr_TR"
 username : "Kullanıcı Adı"
