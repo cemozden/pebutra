@@ -6,11 +6,13 @@ const mustacheExpress = require('mustache-express');
 const http = require('http').Server(express_app);
 const io = require('socket.io')(http);
 const morgan = require('morgan');
+const InitRoutes = require('./routes/InitRoutes');
 
-const PORT = 3000;
+const HTTP_SERVER_PORT = 3000;
 const VIEW_PATH = __dirname + '/windows';
 
 let mainWindow = null;
+let systemLanguage = null; 
 
 express_app.engine('html', mustacheExpress());
 express_app.use(express.static(VIEW_PATH));
@@ -18,19 +20,24 @@ express_app.set('view engine', 'html');
 express_app.set('views', VIEW_PATH);
 express_app.use(morgan('short'));
 
-express_app.get('/', (req, res) => {
-    res.render('login', { title: 'Pebutra, Your Personal Budget Tracker! | Login' });
-});
+InitRoutes(express_app);
 
-express_app.post('/loginprocess.html', (req, res) => {
-    res.render('');
-});
 
 io.on('connection', (socket) => {
     console.log('Socket.IO connection successful.');
     socket.on('disconnect', () => {
         console.log('Socket.IO disconnected.');
     });
+
+    socket.on('languageChanged', (langAlias) => {
+        const YAMLConfigManager = require('./configmanagement/YAMLConfigManager');
+        const configManager = new YAMLConfigManager();
+        systemLanguage = configManager.loadLanguage(langAlias);
+        socket.emit('setupLanguage', systemLanguage);
+
+        console.log(`Language Changed to ${systemLanguage.fullName}`);
+    });
+
 });
 
 function EntryPoint() {
@@ -48,5 +55,5 @@ function EntryPoint() {
         mainWindow.focus();
     });
 }
-http.listen(PORT, () => { console.log(`ExpressJS started. URL: ::1:${PORT}`) });
+http.listen(HTTP_SERVER_PORT, () => { console.log(`ExpressJS started. URL: ::1:${HTTP_SERVER_PORT}`) });
 app.on('ready', EntryPoint);

@@ -7,6 +7,7 @@ password
 exit
 close
 language
+systemLanguage
 login
 unableToLogin
 error
@@ -21,7 +22,6 @@ forgotMyPassword
 name
 surname
 emailAddress
-languageAbbrv
 addUserDescription
 addUser
 val_EmailAddressNotValid
@@ -36,3 +36,7 @@ val_UsernameSpecialCharacters
 val_AddUserFailedDescription
 addUserSuccessful
 addUserFailed
+hitYourUsername
+saveUsername
+dontHaveAnAccount
+loginPageTitle

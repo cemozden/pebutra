@@ -1,7 +1,8 @@
 'use strict'
 const mysql = require('mysql');
-const configParser = require('../configparser/YAMLConfigParser');
-const pebutraSettings = configParser.getPebutraSettings();
+const YAMLConfigManager = require('../configmanagement/YAMLConfigManager');
+const configManager = new YAMLConfigManager();
+const pebutraSettings = configManager.getPebutraSettings();
 
 const pool = mysql.createPool({
     connectionLimit : 10,
