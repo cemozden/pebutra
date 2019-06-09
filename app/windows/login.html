@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
-    <title id="frameTitle">Pebutra, Your Personal Budget Tracker! | {{ lang.login }}</title>
+    <title id="frameTitle">{{ language.loginPageTitle }}</title>
   <style>
     .right-buttons {
       text-align: right;
@@ -25,30 +25,30 @@
               <div class="col-sm-6 mx-auto">
                   <form method="POST" action="/">
                       <div class="form-group">
-                        <label for="username" id="lblUsername">Username</label>
+                        <label for="username" id="lblUsername">{{language.username}}</label>
                         <input type="text" class="form-control form-control-sm" id="username" placeholder="Hit your username!">
                       </div>
                       <div class="form-group">
-                        <label for="password" id="lblPassword">Password</label>
+                        <label for="password" id="lblPassword">{{language.password}}</label>
                         <input type="password" class="form-control form-control-sm" id="password" placeholder="Password">
                       </div>
                       <div class="form-group">
-                        <label for="language" id="systemLanguage">System Language</label>
+                        <label for="language" id="systemLanguage">{{language.systemLanguage}}</label>
                         <select id="cmbLanguages" name="cmbLanguages" class="form-control">
                           <option value="en">English</option>
-                          <option value="tr">Türkçe</option>
+                          <option value="tr">Türkçe</option>}
                         </select>
                       </div>
                       <div class="form-check">
                         <input type="checkbox" checked="true" class="form-check-input" id="saveUsername">
-                        <label class="form-check-label" id="saveUsernameInfo" for="saveUsername">Save my username after log in</label>
+                        <label class="form-check-label" id="saveUsernameInfo" for="saveUsername">{{language.saveUsername}}</label>
                       </div>
                       <div class="col right-buttons">
-                          <button type="button" id="btnLogin" class="btn btn-success">Login</button>
-                          <button type="button" id="btnExit" class="btn btn-primary">Exit</button>
+                          <button type="button" id="btnLogin" class="btn btn-success">{{language.login}}</button>
+                          <button type="button" id="btnExit" class="btn btn-primary">{{language.exit}}</button>
                       </div>
                       <div class="col bottom-align-text signin-text">
-                          <h6><span id="dontHaveAnAccount">Don't you have an account?</span> <a id="createAccount" href="#">Create one!</a></h6>
+                          <h6><span id="dontHaveAnAccount">{{language.dontHaveAnAccount}}</span> <a id="createAccount" href="#">{{language.createYourOwnAccount}}</a></h6>
                       </div>
                     </form>
               </div>

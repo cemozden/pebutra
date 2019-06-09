@@ -1,7 +1,13 @@
-module.exports = (app) => {
+'use strict'
+
+const YAMLConfigManager = require('../configmanagement/YAMLConfigManager');
+
+module.exports = (app, systemLanguage) => {
 
     app.get('/', (req, res) => {
-        res.render('login', { title: 'Pebutra, Your Personal Budget Tracker! | Login' });
+        const configManager = new YAMLConfigManager();
+
+        res.render('login', { language : systemLanguage});
     });
 
 };
