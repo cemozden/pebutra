@@ -12,7 +12,7 @@ const YAMLConfigManager = require('./configmanagement/YAMLConfigManager');
 
 const HTTP_SERVER_PORT = 3000;
 const VIEW_PATH = __dirname + '/windows/';
-console.log(VIEW_PATH);
+
 express_app.engine('html', mustacheExpress());
 express_app.use(express.static(VIEW_PATH));
 express_app.set('view engine', 'html');
