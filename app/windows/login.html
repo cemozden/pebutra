@@ -15,6 +15,35 @@
     }
 
   </style>
+      <script type="text/javascript"> window.$ = window.jQuery = require('jquery'); </script>
+      <script src="assets/js_libs/popper.min.js"></script>
+      <script src="assets/js_libs/bootstrap.min.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script type="text/javascript">
+        const socket = io();
+        
+
+        socket.on('setupLanguage', (lang) => {
+            $('#frameTitle').html(lang.loginPageTitle);
+            $('#lblUsername').html(lang.username);
+            $('#lblPassword').html(lang.password);
+            $('#systemLanguage').html(lang.systemLanguage);
+            $('#username').attr("placeholder", lang.username);
+            $('#password').attr("placeholder", lang.password);
+            $('#saveUsernameInfo').text(lang.saveUsername);
+            $('#btnLogin').text(lang.login);
+            $('#btnExit').text(lang.exit);
+            $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
+            $('#createAccount').text(lang.createYourOwnAccount);
+        });
+        $(document).ready(() => {
+          $("#cmbLanguages").change(function() {
+          const newLanguage = $('#cmbLanguages').val();
+          socket.emit('languageChanged', newLanguage);
+      });
+        });
+        
+      </script>
   </head>
   <body>
       <div class="container">
@@ -36,7 +65,7 @@
                         <label for="language" id="systemLanguage">{{language.systemLanguage}}</label>
                         <select id="cmbLanguages" name="cmbLanguages" class="form-control">
                           <option value="en">English</option>
-                          <option value="tr">Türkçe</option>}
+                          <option value="tr">Türkçe</option>
                         </select>
                       </div>
                       <div class="form-check">
@@ -54,32 +83,7 @@
               </div>
             </div> 
           </div>
-    <script src="assets/js_libs/jquery-3.3.1.slim.min.js" ></script>
-    <script src="assets/js_libs/popper.min.js"></script>
-    <script src="assets/js_libs/bootstrap.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript">
-      const socket = io();
-      
-      socket.on('setupLanguage', (lang) => {
-          $('#frameTitle').html(lang.loginPageTitle);
-          $('#lblUsername').html(lang.username);
-          $('#lblPassword').html(lang.password);
-          $('#systemLanguage').html(lang.systemLanguage);
-          $('#username').attr("placeholder", lang.username);
-          $('#password').attr("placeholder", lang.password);
-          $('#saveUsernameInfo').text(lang.saveUsername);
-          $('#btnLogin').text(lang.login);
-          $('#btnExit').text(lang.exit);
-          $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
-          $('#createAccount').text(lang.createYourOwnAccount);
-      });
 
-      $("#cmbLanguages").change(function() {
-        const newLanguage = $('#cmbLanguages').val();
-        socket.emit('languageChanged', newLanguage);
-    });
-    </script>
   
   </body>
 </html>

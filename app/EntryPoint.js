@@ -11,8 +11,8 @@ const InitRoutes = require('./routes/InitRoutes');
 const YAMLConfigManager = require('./configmanagement/YAMLConfigManager');
 
 const HTTP_SERVER_PORT = 3000;
-const VIEW_PATH = __dirname + '/windows';
-
+const VIEW_PATH = __dirname + '/windows/';
+console.log(VIEW_PATH);
 express_app.engine('html', mustacheExpress());
 express_app.use(express.static(VIEW_PATH));
 express_app.set('view engine', 'html');
@@ -64,12 +64,12 @@ function EntryPoint() {
         width: 950,
         height: 600,
         acceptFirstMouse: true,
-        skipTaskbar: true,
+        //skipTaskbar: true,
         show: false
     });
 
     mainWindow.loadURL('http://localhost:3000/');
-    mainWindow.setMenuBarVisibility(false);
+    //mainWindow.setMenuBarVisibility(false);
     mainWindow.on('closed', () => mainWindow = null);
     mainWindow.on('ready-to-show', () => {
         mainWindow.show();

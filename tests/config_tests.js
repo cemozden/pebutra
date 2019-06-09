@@ -1,3 +1,4 @@
+'use strict'
 const assert = require('assert');
 const fs = require('fs');
 const YAML = require('js-yaml');
@@ -110,7 +111,7 @@ describe('Configuration', () => {
 
             });
 
-            describe('#getAvailableLanguagesInfo', () => {
+            describe('#getAvailableLanguagesInfo()', () => {
                 const configManager = new YAMLConfigManager();
                 
                 it('should throw an error when it cannot find the languages folder', () => {
@@ -119,11 +120,11 @@ describe('Configuration', () => {
                     }, 
                     `getAvailableLanguagesInfo() doesn't throw an exception when it cannot find the languages folder`);
                 });
-
-                it('should throw an exception when it cannot find files in the languages folder that starts with lang_*.yaml', () => {
+                
+                it('should throw an error when it cannot find files in the languages folder that starts with lang_*.yaml', () => {
                     assert.throws(() => {
-                        configManager.getAvailableLanguagesInfo(ConfigUtil.APPLICATION_PATH);
-                    }, `getAvailableLanguagesInfo() doesn't throw an exception when it cannot find files in the languages folder that starts with lang_*.yaml`);
+                        configManager.getAvailableLanguagesInfo(ConfigUtil.TESTS_DIR_PATH);
+                    }, 'getAvailableLanguagesInfo() does not throw an error when it cannot find files in the languages folder that starts with lang_*.yaml');
                 });
 
             });

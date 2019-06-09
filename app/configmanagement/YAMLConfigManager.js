@@ -1,3 +1,4 @@
+'use strict'
 const YAML = require('js-yaml');
 const fs = require('fs');
 const configUtil = require('./ConfigUtil.js');
@@ -55,6 +56,7 @@ class YAMLConfigManager {
     /**
      * 
      * @param {string} languageDirPath Optional parameter to determine the folder where languages configurations are being held. Used in tests. 
+     * @returns {Array}
      */
     getAvailableLanguagesInfo(languageDirPath) {
 
@@ -65,20 +67,15 @@ class YAMLConfigManager {
         if (!fs.existsSync(languageDir)) throw 'Cannot find the languages folder';
         const languageInfoArray = [];
 
-        fs.readdir(languageDir, 'utf8', (err, files) => {
-            if (err) {
-                throw err;
-            }
+        const files = fs.readdirSync(languageDir, 'utf8');
 
-            files.forEach((file) => {
-                if (file.match('lang_[a-z]{2}\.yaml') == null) throw `${file} is not a language configuration file! Please make sure "${languageDir}" only contains language configuration files!`;
-                
-                const languageFilePath = `${languageDir}/${file}`;
-                const languageObject = YAML.safeLoad(fs.readFileSync(languageFilePath));
+        files.forEach((file) => {
+            if (file.match('lang_[a-z]{2}\.yaml') == null) throw `${file} is not a language configuration file! Please make sure "${languageDir}" only contains language configuration files!`;
+            
+            const languageFilePath = `${languageDir}/${file}`;
+            const languageObject = YAML.safeLoad(fs.readFileSync(languageFilePath));
 
-                languageInfoArray.push({alias : languageObject.alias , fullName : languageObject.fullName});
-            });
-
+            languageInfoArray.push({alias : languageObject.alias , fullName : languageObject.fullName});
         });
 
         return languageInfoArray;
