@@ -3,6 +3,8 @@
 process.env.CONFIG_DIR_PATH = `${process.env.PWD}/conf/`;
 process.env.LANGUAGES_FOLDER = `${process.env.PWD}/conf/languages/`;
 process.env.TESTS_DIR_PATH = `${process.env.PWD}/tests/`;
+process.env.APPLICATION_PORT = 3000;
+process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}/`;
 
 const { app, BrowserWindow, dialog } = require('electron');
 const express = require('express');
@@ -17,7 +19,6 @@ const InitSockets = require('./sockets/InitSockets');
 
 const YAMLConfigManager = require('./configmanagement/YAMLConfigManager');
 
-const HTTP_SERVER_PORT = 3000;
 const VIEW_PATH = __dirname + '/windows/';
 
 express_app.engine('html', mustacheExpress());
@@ -65,7 +66,7 @@ function EntryPoint() {
         show: false
     });
 
-    mainWindow.loadURL(`http://localhost:${HTTP_SERVER_PORT}/`);
+    mainWindow.loadURL(`http://localhost:${process.env.APPLICATION_PORT}/`);
     mainWindow.setMenuBarVisibility(false);
     mainWindow.on('closed', () => mainWindow = null);
     mainWindow.on('ready-to-show', () => {
@@ -75,5 +76,5 @@ function EntryPoint() {
     
 }
 
-http.listen(HTTP_SERVER_PORT, () => { console.log(`ExpressJS started. URL: ::1:${HTTP_SERVER_PORT}`) });
+http.listen(process.env.APPLICATION_PORT, () => { console.log(`ExpressJS started. URL: ::1:${process.env.APPLICATION_PORT}`) });
 app.on('ready', EntryPoint);

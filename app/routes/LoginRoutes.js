@@ -16,7 +16,7 @@ module.exports = (app, systemLanguage) => {
             optionOutput = optionOutput + `<option value="${al.alias}" ${selected}>${al.fullName}</option>`;
         });
         
-        res.render('login', { language : systemLanguage, languageOptions : optionOutput});
+        res.render('login', { language : systemLanguage, languageOptions : optionOutput, socketUrl : `${process.env.EXPRESS_URL}/login`});
     });
 
 };

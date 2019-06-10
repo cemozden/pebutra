@@ -20,8 +20,12 @@
       <script src="assets/js_libs/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
       <script type="text/javascript">
-        const socket = io('http://localhost:3000/login');
         
+        
+        $(document).ready(() => {
+          
+          const socket = io(`${document.location.origin}/login`);
+        console.log(`Port: ${process.env.APPLICATION_PORT}`);
 
         socket.on('setupLanguage', (lang) => {
             $('#frameTitle').html(lang.loginPageTitle);
@@ -36,9 +40,7 @@
             $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
             $('#createAccount').text(lang.createYourOwnAccount);
         });
-        
-        $(document).ready(() => {
-          
+
           $("#cmbLanguages").change(() => {
               const newLanguage = $('#cmbLanguages').val();
               socket.emit('languageChanged', newLanguage);
@@ -47,7 +49,6 @@
           $('#btnLogin').click(() => {
               
           });
-          
           
         });
         
