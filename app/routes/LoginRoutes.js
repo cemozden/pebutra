@@ -16,7 +16,12 @@ module.exports = (app, systemLanguage) => {
             optionOutput = optionOutput + `<option value="${al.alias}" ${selected}>${al.fullName}</option>`;
         });
         
-        res.render('login', { language : systemLanguage, languageOptions : optionOutput, socketUrl : `${process.env.EXPRESS_URL}/login`});
+        const now = new Date();
+        
+
+        res.render('login', { language : systemLanguage, 
+                              languageOptions : optionOutput,
+                              pebutraInfo : `${now.getFullYear()}, Pebutra v${process.env.npm_config_init_version}`});
     });
 
 };

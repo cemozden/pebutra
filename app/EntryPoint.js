@@ -27,7 +27,6 @@ express_app.set('view engine', 'html');
 express_app.set('views', VIEW_PATH);
 express_app.use(morgan('short'));
 
-
 function EntryPoint() {
 
     let systemLanguage;
@@ -63,11 +62,14 @@ function EntryPoint() {
         height: 600,
         acceptFirstMouse: true,
         //skipTaskbar: true,
+        webPreferences: {
+            enableRemoteModule: false
+        },
         show: false
     });
 
-    mainWindow.loadURL(`http://localhost:${process.env.APPLICATION_PORT}/`);
-    mainWindow.setMenuBarVisibility(false);
+    mainWindow.loadURL(process.env.EXPRESS_URL);
+    //mainWindow.setMenuBarVisibility(false);
     mainWindow.on('closed', () => mainWindow = null);
     mainWindow.on('ready-to-show', () => {
         mainWindow.show();
