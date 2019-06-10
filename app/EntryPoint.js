@@ -8,6 +8,8 @@ const io = require('socket.io')(http);
 const morgan = require('morgan');
 
 const InitRoutes = require('./routes/InitRoutes');
+const InitSockets = require('./sockets/InitSockets');
+
 const YAMLConfigManager = require('./configmanagement/YAMLConfigManager');
 
 const HTTP_SERVER_PORT = 3000;
@@ -45,20 +47,10 @@ function EntryPoint() {
 
     // Initialize the express routings by providing the default system language.
     InitRoutes(express_app, systemLanguage);
-
-    io.on('connection', (socket) => {
-        console.log('Socket.IO connection successful.');
-        socket.on('disconnect', () => {
-            console.log('Socket.IO disconnected.');
-        });
     
-        socket.on('languageChanged', (langAlias) => {
-            const language = configManager.loadLanguage(langAlias);
-            io.sockets.emit('setupLanguage', language);
-            console.log(`Language Changed to ${language.fullName}`);
-        });
+    // Initialize application sockets
+    InitSockets(io);
     
-    });
 
     let mainWindow = new BrowserWindow({
         width: 950,
@@ -68,8 +60,8 @@ function EntryPoint() {
         show: false
     });
 
-    mainWindow.loadURL('http://localhost:3000/');
-    //mainWindow.setMenuBarVisibility(false);
+    mainWindow.loadURL(`http://localhost:${HTTP_SERVER_PORT}/`);
+    mainWindow.setMenuBarVisibility(false);
     mainWindow.on('closed', () => mainWindow = null);
     mainWindow.on('ready-to-show', () => {
         mainWindow.show();
