@@ -1,4 +1,9 @@
 'use strict'
+
+process.env.CONFIG_DIR_PATH = `${process.env.PWD}/conf/`;
+process.env.LANGUAGES_FOLDER = `${process.env.PWD}/conf/languages/`;
+process.env.TESTS_DIR_PATH = `${process.env.PWD}/tests/`;
+
 const { app, BrowserWindow, dialog } = require('electron');
 const express = require('express');
 const express_app = express();
@@ -39,7 +44,7 @@ function EntryPoint() {
             buttons: ['Ok'],
             title: 'Pebutra | Error',
             message: `An error occured while getting Pebutra settings!`,
-            detail: error,
+            detail: error.toString(),
         };
         dialog.showMessageBox(null, options);
         process.exit(-1);

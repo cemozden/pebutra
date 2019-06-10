@@ -1,7 +1,6 @@
 'use strict'
 const YAML = require('js-yaml');
 const fs = require('fs');
-const configUtil = require('./ConfigUtil.js');
 
 const SETTINGS_YAML_LANGUAGE_PROPERTY_NAME = 'language';
 
@@ -13,14 +12,14 @@ class YAMLConfigManager {
      */
     getPebutraSettings(settingsFilePath) {
         const pebutraSettings = settingsFilePath == undefined || settingsFilePath == '' 
-            ? YAML.safeLoad(fs.readFileSync(configUtil.CONFIG_DIR_PATH + 'settings.yaml')) 
+            ? YAML.safeLoad(fs.readFileSync(process.env.CONFIG_DIR_PATH + 'settings.yaml')) 
             : YAML.safeLoad(fs.readFileSync(settingsFilePath));
 
             if (!pebutraSettings.hasOwnProperty(SETTINGS_YAML_LANGUAGE_PROPERTY_NAME)) {
                 throw `settings.yaml file do not have the property "language". Please define this YAML property in the settings.yaml file with the value of language alias such as "en"`;
             }
 
-            const languageFilePath = `${configUtil.LANGUAGES_FOLDER}lang_${pebutraSettings.language}.yaml`;
+            const languageFilePath = `${process.env.LANGUAGES_FOLDER}lang_${pebutraSettings.language}.yaml`;
             if (!fs.existsSync(languageFilePath))
                throw `Could not find the corresponding language file configuration. File Path: ${languageFilePath}`;
 
@@ -28,7 +27,7 @@ class YAMLConfigManager {
     }
 
     getDatabaseSettings() {
-        const databaseSettings = YAML.safeLoad(fs.readFileSync(configUtil.CONFIG_DIR_PATH + 'db_conf.yaml'));
+        const databaseSettings = YAML.safeLoad(fs.readFileSync(process.env.CONFIG_DIR_PATH + 'db_conf.yaml'));
 
         return databaseSettings;
     }
@@ -44,7 +43,7 @@ class YAMLConfigManager {
         if (typeof langAlias != 'string') throw 'The langAlias parameter can only be string!';
         if (langAlias === '') throw 'The langAlias parameter cannot be empty!';
 
-        const languageFilePath = `${configUtil.LANGUAGES_FOLDER}lang_${langAlias}.yaml`;
+        const languageFilePath = `${process.env.LANGUAGES_FOLDER}lang_${langAlias}.yaml`;
         if (!fs.existsSync(languageFilePath))
            throw `Could not find the corresponding language file configuration. File Path: ${languageFilePath}`;
         
@@ -61,7 +60,7 @@ class YAMLConfigManager {
     getAvailableLanguagesInfo(languageDirPath) {
 
         const languageDir = languageDirPath == undefined || languageDirPath == '' 
-            ? configUtil.LANGUAGES_FOLDER 
+            ? process.env.LANGUAGES_FOLDER 
             : languageDirPath;
         
         if (!fs.existsSync(languageDir)) throw 'Cannot find the languages folder';
