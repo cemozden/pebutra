@@ -18,7 +18,8 @@ version : "Version"
 addIncomeOutcome : "Add Income/Outcome" 
 name: "Name"
 surname : "Surname"
-emailAddress : "E-Mail Address"
+emailAddress : "E-mail Address"
+pebutraInfo : "{{year}}, Pebutra Created by {{creator}} | Version: {{version}} | License: MIT"
 
 # Login properties
 login : "Login"

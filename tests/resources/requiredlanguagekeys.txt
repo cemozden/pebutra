@@ -40,3 +40,4 @@ hitYourUsername
 saveUsername
 dontHaveAnAccount
 loginPageTitle
+pebutraInfo

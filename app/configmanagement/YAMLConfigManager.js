@@ -1,6 +1,7 @@
 'use strict'
 const YAML = require('js-yaml');
 const fs = require('fs');
+const mustache = require('mustache');
 
 const SETTINGS_YAML_LANGUAGE_PROPERTY_NAME = 'language';
 
@@ -48,6 +49,19 @@ class YAMLConfigManager {
            throw `Could not find the corresponding language file configuration. File Path: ${languageFilePath}`;
         
         const languageObject = YAML.safeLoad(fs.readFileSync(languageFilePath));
+        
+        const languageVariableValues = {
+            year : new Date().getFullYear(),
+            creator : process.env.npm_package_author_name,
+            version : process.env.npm_config_init_version
+        };
+        
+        // Replace mustache variables with the given value object.
+        for (const langKey in languageObject) {
+            if (languageObject.hasOwnProperty(langKey)) {
+                languageObject[langKey] = mustache.render(languageObject[langKey], languageVariableValues);
+            }
+        }
 
         return languageObject;
     }

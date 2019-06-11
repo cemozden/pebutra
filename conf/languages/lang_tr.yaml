@@ -18,7 +18,8 @@ username : "Kullanıcı Adı"
 password : "Parola"
 name: "İsim"
 surname : "Soyisim"
-emailAddress : "E-Posta Addresi"
+emailAddress : "E-posta Addresi"
+pebutraInfo : "{{year}}, Pebutra {{creator}} tarafından geliştirildi. | Sürüm: {{version}} | Lisans: MIT"
 
 # Login properties
 login : "Giriş Yap"
