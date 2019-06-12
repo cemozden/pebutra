@@ -28,10 +28,10 @@
         
         $(document).ready(() => {
           
-          const socket = io(`${document.location.origin}/login`);
-        console.log(`Port: ${process.env.APPLICATION_PORT}`);
+        const loginSocket = io(`${document.location.origin}/login`);
+        const mainSocket = io();
 
-        socket.on('setupLanguage', (lang) => {
+        loginSocket.on('setupLanguage', (lang) => {
             $('#frameTitle').html(lang.loginPageTitle);
             $('#lblUsername').html(lang.username);
             $('#lblPassword').html(lang.password);
@@ -48,8 +48,12 @@
 
           $("#cmbLanguages").change(() => {
               const newLanguage = $('#cmbLanguages').val();
-              socket.emit('languageChanged', newLanguage);
+              loginSocket.emit('languageChanged', newLanguage);
             });
+
+          $('#btnExit').click(() => {
+              mainSocket.emit('exitApplication');
+          });
 
           $('#btnLogin').click(() => {
               

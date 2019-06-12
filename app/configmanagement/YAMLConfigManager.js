@@ -58,9 +58,9 @@ class YAMLConfigManager {
         
         // Replace mustache variables with the given value object.
         for (const langKey in languageObject) {
-            if (languageObject.hasOwnProperty(langKey)) {
+            if (languageObject.hasOwnProperty(langKey)) 
                 languageObject[langKey] = mustache.render(languageObject[langKey], languageVariableValues);
-            }
+            
         }
 
         return languageObject;
