@@ -4,7 +4,7 @@ process.env.CONFIG_DIR_PATH = `${process.env.PWD}/conf/`;
 process.env.LANGUAGES_FOLDER = `${process.env.PWD}/conf/languages/`;
 process.env.TESTS_DIR_PATH = `${process.env.PWD}/tests/`;
 process.env.APPLICATION_PORT = 3000;
-process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}/`;
+process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}`;
 
 const { app, BrowserWindow, dialog } = require('electron');
 const express = require('express');
@@ -53,9 +53,6 @@ function EntryPoint() {
     // Initialize the express routings by providing the default system language.
     InitRoutes(express_app, systemLanguage);
     
-    // Initialize application sockets
-    InitSockets(io);
-    
 
     let mainWindow = new BrowserWindow({
         width: 950,
@@ -67,6 +64,14 @@ function EntryPoint() {
         },
         show: false
     });
+
+    // Initialize application sockets
+    const socketComponents = {
+        io : io,
+        mainWindow : mainWindow
+    };
+
+    InitSockets(socketComponents);
 
     mainWindow.loadURL(process.env.EXPRESS_URL);
     //mainWindow.setMenuBarVisibility(false);

@@ -2,13 +2,13 @@
 
 const LoginSocket = require('./LoginSocket');
 
-module.exports = (io) => {
+module.exports = (components) => {
 
-    io.of('/').on('connection', (socket) => {
+    components.io.of('/').on('connection', (socket) => {
         socket.on('exitApplication', () => {
             process.exit(0);
         });
     });
 
-    LoginSocket(io);
+    LoginSocket(components.io, components.mainWindow);
 };

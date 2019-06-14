@@ -28,37 +28,45 @@
         
         $(document).ready(() => {
           
-        const loginSocket = io(`${document.location.origin}/login`);
-        const mainSocket = io();
+          const loginSocket = io(`${document.location.origin}/login`);
+          const mainSocket = io();
 
-        loginSocket.on('setupLanguage', (lang) => {
-            $('#frameTitle').html(lang.loginPageTitle);
-            $('#lblUsername').html(lang.username);
-            $('#lblPassword').html(lang.password);
-            $('#systemLanguage').html(lang.systemLanguage);
-            $('#username').attr("placeholder", lang.username);
-            $('#password').attr("placeholder", lang.password);
-            $('#saveUsernameInfo').text(lang.saveUsername);
-            $('#btnLogin').text(lang.login);
-            $('#btnExit').text(lang.exit);
-            $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
-            $('#createAccount').text(lang.createYourOwnAccount);
-            $('#pebutraInfo').text(lang.pebutraInfo);
-        });
+          loginSocket.on('setupLanguage', (lang) => {
+              $('#frameTitle').html(lang.loginPageTitle);
+              $('#lblUsername').html(lang.username);
+              $('#lblPassword').html(lang.password);
+              $('#systemLanguage').html(lang.systemLanguage);
+              $('#username').attr("placeholder", lang.hitYourUsername);
+              $('#password').attr("placeholder", lang.password);
+              $('#saveUsernameInfo').text(lang.saveUsername);
+              $('#btnLogin').text(lang.login);
+              $('#btnExit').text(lang.exit);
+              $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
+              $('#createAccount').text(lang.createYourOwnAccount);
+              $('#pebutraInfo').text(lang.pebutraInfo);
+          });
 
-          $("#cmbLanguages").change(() => {
-              const newLanguage = $('#cmbLanguages').val();
-              loginSocket.emit('languageChanged', newLanguage);
+            $("#cmbLanguages").change(() => {
+                const newLanguage = $('#cmbLanguages').val();
+                loginSocket.emit('languageChanged', newLanguage);
+              });
+
+            $('#btnExit').click(() => {
+                mainSocket.emit('exitApplication');
             });
 
-          $('#btnExit').click(() => {
-              mainSocket.emit('exitApplication');
-          });
+            $('#btnLogin').click(() => {
+                const user = {
+                  username : $('#username').text(),
+                  password : $('#password').text()
+                };
 
-          $('#btnLogin').click(() => {
-              
-          });
-          
+              // validation icin kullan
+              $('#loginForm').classList.add('was-validated');
+
+                loginSocket.emit('loginRequested', user);
+            });
+                      
         });
         
       </script>
@@ -70,14 +78,20 @@
             </div>
             <div class="row">
               <div class="col-sm-6 mx-auto">
-                  <form method="POST" action="/">
+                  <form method="POST" id="loginForm" class="needs-validation" action="/">
                       <div class="form-group">
                         <label for="username" id="lblUsername">{{language.username}}</label>
-                        <input type="text" class="form-control form-control-sm" id="username" placeholder="Hit your username!">
+                        <input type="text" class="form-control form-control-sm is-valid" id="username" placeholder="{{language.hitYourUsername}}" required>
+                        <div class="invalid-feedback ">
+                          You must agree before submitting.
+                        </div>
                       </div>
                       <div class="form-group">
                         <label for="password" id="lblPassword">{{language.password}}</label>
-                        <input type="password" class="form-control form-control-sm" id="password" placeholder="Password">
+                        <input type="password" class="form-control form-control-sm is-invalid" id="password" placeholder="{{language.password}}">
+                        <div class="invalid-feedback ">
+                          You must agree before submitting.
+                        </div>
                       </div>
                       <div class="form-group">
                         <label for="language" id="systemLanguage">{{language.systemLanguage}}</label>

@@ -21,4 +21,8 @@ module.exports = (app, systemLanguage) => {
                             });
     });
 
+    app.get('/main', (req, res) => {
+        res.send('Main Window');
+    });
+
 };
