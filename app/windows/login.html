@@ -10,6 +10,10 @@
       text-align: right;
     }
 
+    .center-text {
+      text-align: center;
+    }
+
     .signin-text {
       margin-top: 5%;
     }
@@ -20,28 +24,78 @@
       <script src="assets/js_libs/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
       <script type="text/javascript">
-        const socket = io();
         
-
-        socket.on('setupLanguage', (lang) => {
-            $('#frameTitle').html(lang.loginPageTitle);
-            $('#lblUsername').html(lang.username);
-            $('#lblPassword').html(lang.password);
-            $('#systemLanguage').html(lang.systemLanguage);
-            $('#username').attr("placeholder", lang.username);
-            $('#password').attr("placeholder", lang.password);
-            $('#saveUsernameInfo').text(lang.saveUsername);
-            $('#btnLogin').text(lang.login);
-            $('#btnExit').text(lang.exit);
-            $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
-            $('#createAccount').text(lang.createYourOwnAccount);
-        });
         
         $(document).ready(() => {
-          $("#cmbLanguages").change(function() {
-          const newLanguage = $('#cmbLanguages').val();
-          socket.emit('languageChanged', newLanguage);
-      });
+          
+          const loginSocket = io(`${document.location.origin}/login`);
+          const mainSocket = io();
+         
+          loginSocket.on('setupLanguage', (lang) => {
+              $('#frameTitle').html(lang.loginPageTitle);
+              $('#lblUsername').html(lang.username);
+              $('#lblPassword').html(lang.password);
+              $('#systemLanguage').html(lang.systemLanguage);
+              $('#username').attr("placeholder", lang.hitYourUsername);
+              $('#password').attr("placeholder", lang.password);
+              $('#saveUsernameInfo').text(lang.saveUsername);
+              $('#btnLogin').text(lang.login);
+              $('#btnExit').text(lang.exit);
+              $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
+              $('#createAccount').text(lang.createYourOwnAccount);
+              $('#pebutraInfo').text(lang.pebutraInfo);
+
+              $('#username').removeClass('is-invalid');
+              $('#password').removeClass('is-invalid');
+          });
+
+          loginSocket.on('loginValidationResult', (result) => {
+
+            $('#username').removeClass('is-invalid');
+            $('#password').removeClass('is-invalid');
+
+            if (!result.validAll) {
+                const validationResults = result.validationResults;
+                
+                for (vr of validationResults) {
+                  if (!vr.valid) {
+                    $('#' + vr.validationName).addClass('is-invalid');
+                    $('#' + vr.validationName + 'InvalidFeedback').text(vr.message);
+                  }
+                  
+                }
+
+              }
+              else {
+                  console.log('Valid all!');
+                  //TODO: Implement login process.
+                  const user = {
+                    username : $('#username').val(),
+                    password : $('#password').val()
+                  };
+
+                  loginSocket.emit('performLogin', user);
+              }
+          });
+
+            $("#cmbLanguages").change(() => {
+                const newLanguage = $('#cmbLanguages').val();
+                loginSocket.emit('languageChanged', newLanguage);
+              });
+
+            $('#btnExit').click(() => {
+                mainSocket.emit('exitApplication');
+            });
+
+            $('#btnLogin').click(() => {
+                const user = {
+                  username : $('#username').val(),
+                  password : $('#password').val()
+                };
+
+                loginSocket.emit('validateLoginForm', user);
+            });
+                      
         });
         
       </script>
@@ -53,22 +107,22 @@
             </div>
             <div class="row">
               <div class="col-sm-6 mx-auto">
-                  <form method="POST" action="/">
+                  <form method="POST" id="loginForm" class="needs-validation" action="/">
                       <div class="form-group">
                         <label for="username" id="lblUsername">{{language.username}}</label>
-                        <input type="text" class="form-control form-control-sm" id="username" placeholder="Hit your username!">
+                        <input type="text" class="form-control form-control-sm" id="username" placeholder="{{language.hitYourUsername}}">
+                        <div id="usernameInvalidFeedback" class="invalid-feedback "></div>
                       </div>
                       <div class="form-group">
                         <label for="password" id="lblPassword">{{language.password}}</label>
-                        <input type="password" class="form-control form-control-sm" id="password" placeholder="Password">
+                        <input type="password" class="form-control form-control-sm" id="password" placeholder="{{language.password}}">
+                        <div id="passwordInvalidFeedback" class="invalid-feedback "></div>
                       </div>
                       <div class="form-group">
                         <label for="language" id="systemLanguage">{{language.systemLanguage}}</label>
                         <select id="cmbLanguages" name="cmbLanguages" class="form-control">
                          {{{ languageOptions }}}
-                          <!-- <option value="en">English</option>
-                          <option value="tr">Türkçe</option>
-                        --></select>
+                        </select>
                       </div>
                       <div class="form-check">
                         <input type="checkbox" checked="true" class="form-check-input" id="saveUsername">
@@ -81,11 +135,14 @@
                       <div class="col bottom-align-text signin-text">
                           <h6><span id="dontHaveAnAccount">{{language.dontHaveAnAccount}}</span> <a id="createAccount" href="#">{{language.createYourOwnAccount}}</a></h6>
                       </div>
+                      <div class="col bottom-align-text center-text">
+                        <h6 id="pebutraInfo">{{language.pebutraInfo}}</h6>
+                      </div>
                     </form>
               </div>
             </div> 
           </div>
-
+          
   
   </body>
 </html>

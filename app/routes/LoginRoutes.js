@@ -16,7 +16,13 @@ module.exports = (app, systemLanguage) => {
             optionOutput = optionOutput + `<option value="${al.alias}" ${selected}>${al.fullName}</option>`;
         });
         
-        res.render('login', { language : systemLanguage, languageOptions : optionOutput});
+        res.render('login', { language : systemLanguage, 
+                              languageOptions : optionOutput
+                            });
+    });
+
+    app.get('/main', (req, res) => {
+        res.send('Main Window');
     });
 
 };

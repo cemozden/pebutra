@@ -40,3 +40,5 @@ hitYourUsername
 saveUsername
 dontHaveAnAccount
 loginPageTitle
+pebutraInfo
+val_UsernameNotString

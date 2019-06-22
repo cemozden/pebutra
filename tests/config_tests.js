@@ -3,27 +3,30 @@ const assert = require('assert');
 const fs = require('fs');
 const YAML = require('js-yaml');
 
-const ConfigUtil = require('../app/configmanagement/ConfigUtil');
 const YAMLConfigManager = require('../app/configmanagement/YAMLConfigManager');
+
+process.env.CONFIG_DIR_PATH = `${process.env.PWD}/conf/`;
+process.env.LANGUAGES_FOLDER = `${process.env.PWD}/conf/languages/`;
+process.env.TESTS_DIR_PATH = `${process.env.PWD}/tests/`;
 
 describe('Configuration', () => {
     describe('conf folder', () => {
         it('should exist in the root path', () => {
-           assert.ok(fs.existsSync(ConfigUtil.CONFIG_DIR_PATH), `The conf folder cannot be found in the directory ${ConfigUtil.CONFIG_DIR_PATH}`);
+           assert.ok(fs.existsSync(process.env.CONFIG_DIR_PATH), `The conf folder cannot be found in the directory ${process.env.CONFIG_DIR_PATH}`);
         });
     });
 
     // Write tests that will validate settings.yaml file such as language is available etc.
     describe('settings.yaml', () => {
         it('should exist in the conf folder', () => {
-            const settingsFilePath = `${ConfigUtil.CONFIG_DIR_PATH}/settings.yaml`;
+            const settingsFilePath = `${process.env.CONFIG_DIR_PATH}/settings.yaml`;
             assert.ok(fs.existsSync(settingsFilePath), 
                     `The settings.yaml file cannot be found in the path: ${settingsFilePath}`)});
     });
 
     describe('db_conf.yaml', () => {
         it('should exist in the conf folder', () => {
-            const settingsFilePath = `${ConfigUtil.CONFIG_DIR_PATH}/db_conf.yaml`;
+            const settingsFilePath = `${process.env.CONFIG_DIR_PATH}/db_conf.yaml`;
             assert.ok(fs.existsSync(settingsFilePath), 
                     `The db_conf.yaml file cannot be found in the path: ${settingsFilePath}`)});
     });
@@ -31,29 +34,29 @@ describe('Configuration', () => {
     describe('Language Configurations', () => {
         it('should contain at least the english language configuration file',
             () => {
-                const langEnFilePath = `${ConfigUtil.LANGUAGES_FOLDER}/lang_en.yaml`;
+                const langEnFilePath = `${process.env.LANGUAGES_FOLDER}/lang_en.yaml`;
                 assert.ok(fs.existsSync(langEnFilePath), `The english language file cannot be found in the path: ${langEnFilePath}`)
             });
 
         it('should contain requiredlanguagekeys.txt file to check the required keys',
             () => {
-                const requiredLanguageKeysFilePath = `${ConfigUtil.TESTS_DIR_PATH}/resources/requiredlanguagekeys.txt`;
+                const requiredLanguageKeysFilePath = `${process.env.TESTS_DIR_PATH}/resources/requiredlanguagekeys.txt`;
                 assert.ok(fs.existsSync(requiredLanguageKeysFilePath));
         });
 
         it('should contain all required language keys', () => {
             
-            fs.readFile(`${ConfigUtil.TESTS_DIR_PATH}resources/requiredlanguagekeys.txt`,'utf8', (err, data) => {
+            fs.readFile(`${process.env.TESTS_DIR_PATH}resources/requiredlanguagekeys.txt`,'utf8', (err, data) => {
                 const requiredLanguageKeys = data.split('\n');
   
-                fs.readdir(ConfigUtil.LANGUAGES_FOLDER, 'utf8', (err, files) => {
+                fs.readdir(process.env.LANGUAGES_FOLDER, 'utf8', (err, files) => {
 
                     if (err) {
                         throw err;
                     }
 
                     files.forEach((file) => {
-                        const languageFilePath = ConfigUtil.LANGUAGES_FOLDER + file;        
+                        const languageFilePath = process.env.LANGUAGES_FOLDER + file;        
                         const languageFileObject = YAML.safeLoad(fs.readFileSync(languageFilePath));
                         
                         requiredLanguageKeys.filter((key) => key != undefined && key != "").
@@ -104,7 +107,7 @@ describe('Configuration', () => {
 
                 it('should throw an error when the language parameter is missing', () => {
                     assert.throws(() => {
-                        configManager.getPebutraSettings(`${ConfigUtil.TESTS_DIR_PATH}resources/not_valid_settings.yaml`);
+                        configManager.getPebutraSettings(`${process.env.TESTS_DIR_PATH}resources/not_valid_settings.yaml`);
                     }, `getPebutraSettings() doesn't throw an exception when the settingsFilePath parameter is undefined!`);
 
                 });
@@ -123,7 +126,7 @@ describe('Configuration', () => {
                 
                 it('should throw an error when it cannot find files in the languages folder that starts with lang_*.yaml', () => {
                     assert.throws(() => {
-                        configManager.getAvailableLanguagesInfo(ConfigUtil.TESTS_DIR_PATH);
+                        configManager.getAvailableLanguagesInfo(process.env.TESTS_DIR_PATH);
                     }, 'getAvailableLanguagesInfo() does not throw an error when it cannot find files in the languages folder that starts with lang_*.yaml');
                 });
 
