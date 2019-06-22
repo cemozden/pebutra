@@ -37,6 +37,7 @@ loginPageTitle : "Pebutra, Your Personal Budget Tracker! | Login"
 
 # Validation Properties
 val_UsernameNotString : "Username input is not a valid value."
+val_PasswordNotString : "Password input is not a valid value."
 val_EmailAddressNotValid : "${emailAddress} is not a valid e-mail address."
 val_EmailAddressEmpty : "Your e-mail address cannot be empty."
 val_NameEmpty : "Your name cannot be empty."

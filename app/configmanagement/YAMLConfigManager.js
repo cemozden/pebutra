@@ -106,6 +106,15 @@ class YAMLConfigManager {
 
     }
 
+    writePebutraSettings(pebutraSettings) {
+
+        fs.writeFile(process.env.CONFIG_DIR_PATH + 'settings.yaml', YAML.safeDump(pebutraSettings), (err) => {
+            if (err) {
+                console.log('Unable to write to the settings.yaml file');
+            }
+        });
+    }
+
 
 }
 

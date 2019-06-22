@@ -37,6 +37,7 @@ loginPageTitle : "Pebutra, Kişisel bütçe takipçiniz! | Giriş Yap"
 
 # Validation Properties
 val_UsernameNotString : "Girdiğiniz kullanıcı adı bilgisi geçerli bir değer değildir."
+val_PasswordNotString : "Girdiğiniz parola bilgisi geçerli bir değer değildir."
 val_EmailAddressNotValid : "Girdiğiniz ${emailAddress} geçerli bir e-posta adresi değil."
 val_EmailAddressEmpty : "e-posta adresiniz boş olamaz."
 val_NameEmpty : "İsminiz boş girilemez."
