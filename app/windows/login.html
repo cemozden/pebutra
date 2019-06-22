@@ -23,7 +23,6 @@
       <script src="assets/js_libs/popper.min.js"></script>
       <script src="assets/js_libs/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
-      <script src="formvalidation.js"></script>
       <script type="text/javascript">
         
         
@@ -32,12 +31,6 @@
           const loginSocket = io(`${document.location.origin}/login`);
           const mainSocket = io();
          
-          
-          // send message to server to check validations
-          loginFormValidation.addOrUpdateValidation('username', (validationObject) => {
-              if (validationObject.username) {}
-          });
-
           loginSocket.on('setupLanguage', (lang) => {
               $('#frameTitle').html(lang.loginPageTitle);
               $('#lblUsername').html(lang.username);
@@ -51,6 +44,38 @@
               $('#dontHaveAnAccount').html(lang.dontHaveAnAccount);
               $('#createAccount').text(lang.createYourOwnAccount);
               $('#pebutraInfo').text(lang.pebutraInfo);
+
+              $('#username').removeClass('is-invalid');
+              $('#password').removeClass('is-invalid');
+          });
+
+          loginSocket.on('loginValidationResult', (result) => {
+
+            $('#username').removeClass('is-invalid');
+            $('#password').removeClass('is-invalid');
+
+            if (!result.validAll) {
+                const validationResults = result.validationResults;
+                
+                for (vr of validationResults) {
+                  if (!vr.valid) {
+                    $('#' + vr.validationName).addClass('is-invalid');
+                    $('#' + vr.validationName + 'InvalidFeedback').text(vr.message);
+                  }
+                  
+                }
+
+              }
+              else {
+                  console.log('Valid all!');
+                  //TODO: Implement login process.
+                  const user = {
+                    username : $('#username').val(),
+                    password : $('#password').val()
+                  };
+
+                  loginSocket.emit('performLogin', user);
+              }
           });
 
             $("#cmbLanguages").change(() => {
@@ -64,13 +89,11 @@
 
             $('#btnLogin').click(() => {
                 const user = {
-                  username : $('#username').text(),
-                  password : $('#password').text()
+                  username : $('#username').val(),
+                  password : $('#password').val()
                 };
 
-              // validation icin kullan
-              $('#password').addClass('is-invalid');
-              //loginSocket.emit('loginRequested', user);
+                loginSocket.emit('validateLoginForm', user);
             });
                       
         });
@@ -88,16 +111,12 @@
                       <div class="form-group">
                         <label for="username" id="lblUsername">{{language.username}}</label>
                         <input type="text" class="form-control form-control-sm" id="username" placeholder="{{language.hitYourUsername}}">
-                        <div class="invalid-feedback ">
-                          You must agree before submitting.
-                        </div>
+                        <div id="usernameInvalidFeedback" class="invalid-feedback "></div>
                       </div>
                       <div class="form-group">
                         <label for="password" id="lblPassword">{{language.password}}</label>
                         <input type="password" class="form-control form-control-sm" id="password" placeholder="{{language.password}}">
-                        <div class="invalid-feedback ">
-                          You must agree before submitting.
-                        </div>
+                        <div id="passwordInvalidFeedback" class="invalid-feedback "></div>
                       </div>
                       <div class="form-group">
                         <label for="language" id="systemLanguage">{{language.systemLanguage}}</label>

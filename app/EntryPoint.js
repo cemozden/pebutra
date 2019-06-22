@@ -35,7 +35,6 @@ function EntryPoint() {
     try {
         const pebutraSettings = configManager.getPebutraSettings();
         systemLanguage = configManager.loadLanguage(pebutraSettings.language);
-
         console.log(`System Language: ${systemLanguage.fullName}`);
     }
     catch (error) {
@@ -76,6 +75,9 @@ function EntryPoint() {
     mainWindow.loadURL(process.env.EXPRESS_URL);
     //mainWindow.setMenuBarVisibility(false);
     mainWindow.on('closed', () => mainWindow = null);
+
+    if (process.env.NODE_ENV === 'development')  mainWindow.webContents.openDevTools(); 
+
     mainWindow.on('ready-to-show', () => {
         mainWindow.show();
         mainWindow.focus();

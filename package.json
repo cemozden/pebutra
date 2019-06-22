@@ -4,7 +4,7 @@
   "description": "Pebutra, A personal budget tracker",
   "main": "app/EntryPoint.js",
   "scripts": {
-    "start": "electron .",
+    "start": "NODE_ENV=development electron .",
     "test": "mocha -R spec tests"
   },
   "devDependencies": {

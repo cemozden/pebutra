@@ -68,6 +68,16 @@ class YAMLConfigManager {
     }
 
     /**
+     * The function that returns the current system language from configuration file.
+     * @returns {LanguageObject}
+     */
+    getDefaultLanguage() {
+        const defaultLanguage = this.getPebutraSettings().language;
+
+        return this.loadLanguage(defaultLanguage);
+    }
+
+    /**
      * 
      * @param {string} languageDirPath Optional parameter to determine the folder where languages configurations are being held. Used in tests. 
      * @returns {Array}
