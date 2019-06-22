@@ -6,11 +6,7 @@ class FormValidation {
         this.validationProcessors = new Map();
         this.validationObject = validationObject;
     }
-
-    setValidationObject(validationObject) {
-        this.validationObject = validationObject;
-    }
-
+    
     /**
      * 
      * @param {string} name 

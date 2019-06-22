@@ -42,3 +42,4 @@ dontHaveAnAccount
 loginPageTitle
 pebutraInfo
 val_UsernameNotString
+val_PasswordNotString
