@@ -16,6 +16,11 @@ module.exports = (io, mainWindow) => {
 
         socket.on('languageChanged', (langAlias) => {
             const language = configManager.loadLanguage(langAlias);
+            const pebutraSettings = configManager.getPebutraSettings();
+
+            pebutraSettings.language = langAlias;
+            configManager.writePebutraSettings(pebutraSettings);
+
             socket.emit('setupLanguage', language);
             console.log(`Language Changed to ${language.fullName}`);
         });
