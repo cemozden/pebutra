@@ -1,23 +1,23 @@
-'use strict'
+import { app, BrowserWindow, dialog } from "electron";
+import { Components } from "./sockets/InitSockets";
+import { InitRoutes } from "./routes/InitRoutes";
+import { InitSockets } from "./sockets/InitSockets";
+import { YAMLConfigManager } from "./configmanagement/YAMLConfigManager";
+
+import * as express from "express";
+import * as mustacheExpress from "mustache-express";
+import * as morgan from "morgan";
+
 
 process.env.CONFIG_DIR_PATH = `${process.env.PWD}/conf/`;
 process.env.LANGUAGES_FOLDER = `${process.env.PWD}/conf/languages/`;
 process.env.TESTS_DIR_PATH = `${process.env.PWD}/tests/`;
-process.env.APPLICATION_PORT = 3000;
+process.env.APPLICATION_PORT = '3000';
 process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}`;
 
-const { app, BrowserWindow, dialog } = require('electron');
-const express = require('express');
 const express_app = express();
-const mustacheExpress = require('mustache-express');
 const http = require('http').Server(express_app);
 const io = require('socket.io')(http);
-const morgan = require('morgan');
-
-const InitRoutes = require('./routes/InitRoutes');
-const InitSockets = require('./sockets/InitSockets');
-
-const YAMLConfigManager = require('./configmanagement/YAMLConfigManager');
 
 const VIEW_PATH = __dirname + '/windows/';
 
@@ -29,7 +29,7 @@ express_app.use(morgan('short'));
 
 function EntryPoint() {
 
-    let systemLanguage;
+    let systemLanguage : any;
     const configManager = new YAMLConfigManager();
 
     try {
@@ -59,13 +59,14 @@ function EntryPoint() {
         acceptFirstMouse: true,
         //skipTaskbar: true,
         webPreferences: {
-            enableRemoteModule: false
+            //enableRemoteModule: false
+            //nodeIntegration : true
         },
         show: false
     });
 
     // Initialize application sockets
-    const socketComponents = {
+    const socketComponents : Components = {
         io : io,
         mainWindow : mainWindow
     };
@@ -73,7 +74,7 @@ function EntryPoint() {
     InitSockets(socketComponents);
 
     mainWindow.loadURL(process.env.EXPRESS_URL);
-    //mainWindow.setMenuBarVisibility(false);
+    mainWindow.setMenuBarVisibility(false);
     mainWindow.on('closed', () => mainWindow = null);
 
     if (process.env.NODE_ENV === 'development')  mainWindow.webContents.openDevTools(); 
