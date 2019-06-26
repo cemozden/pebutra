@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist/",
     "copyassets": "node copy-assets.js",
-    "start": "NODE_ENV=development electron .",
+    "start": "NODE_ENV=production electron .",
     "build": "npm run-script clean && tsc && npm run-script copyassets && npm test",
     "buildrun": "npm run-script build && npm run-script start",
     "test": "mocha -R spec dist/tests"
