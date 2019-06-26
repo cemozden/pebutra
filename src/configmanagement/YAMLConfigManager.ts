@@ -87,11 +87,6 @@ export class YAMLConfigManager {
         return this.loadLanguage(defaultLanguage);
     }
 
-       /**
-     * 
-     * @param {string} languageDirPath Optional parameter to determine the folder where languages configurations are being held. Used in tests. 
-     * @returns {Array}
-     */
     getAvailableLanguagesInfo() : LanguageInfo[] {
         
         if (!fs.existsSync(process.env.LANGUAGES_FOLDER)) throw 'Cannot find the languages folder';

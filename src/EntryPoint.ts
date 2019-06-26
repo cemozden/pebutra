@@ -9,9 +9,9 @@ import * as mustacheExpress from "mustache-express";
 import * as morgan from "morgan";
 
 
-process.env.CONFIG_DIR_PATH = `${process.env.PWD}/conf/`;
-process.env.LANGUAGES_FOLDER = `${process.env.PWD}/conf/languages/`;
-process.env.TESTS_DIR_PATH = `${process.env.PWD}/tests/`;
+process.env.CONFIG_DIR_PATH = `${process.env.PWD}/dist/conf/`;
+process.env.LANGUAGES_FOLDER = `${process.env.PWD}/dist/conf/languages/`;
+process.env.TESTS_DIR_PATH = `${process.env.PWD}/dist/tests/`;
 process.env.APPLICATION_PORT = '3000';
 process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}`;
 
@@ -57,11 +57,6 @@ function EntryPoint() {
         width: 950,
         height: 600,
         acceptFirstMouse: true,
-        //skipTaskbar: true,
-        webPreferences: {
-            //enableRemoteModule: false
-            //nodeIntegration : true
-        },
         show: false
     });
 
