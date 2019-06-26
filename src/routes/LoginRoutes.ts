@@ -1,8 +1,6 @@
-'use strict'
+import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
 
-const YAMLConfigManager = require('../configmanagement/YAMLConfigManager');
-
-module.exports = (app, systemLanguage) => {
+export function LoginRoutes(app : any, systemLanguage : any) {
 
     app.get('/', (req, res) => {
         const configManager = new YAMLConfigManager();

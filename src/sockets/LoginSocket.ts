@@ -1,20 +1,20 @@
-'use strict'
-
-const YAMLConfigManager = require('../configmanagement/YAMLConfigManager');
-const LoginValidation = require('../validations/LoginValidation.js');
+import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
+import { LoginValidation } from "../validations/LoginValidation";
+import { BrowserWindow } from "electron";
+import { User } from "../models/User";
 
 const configManager = new YAMLConfigManager();
 
-module.exports = (io, mainWindow) => {
+export function LoginSocket(io : any, mainWindow : BrowserWindow) {
 
-    io.of('/login').on('connection', (socket) => {
+    io.of('/login').on('connection', (socket : any) => {
         console.log('Socket.IO /login connection successful.');
         
         socket.on('disconnect', () => {
             console.log('Socket.IO disconnected.');
         });
 
-        socket.on('languageChanged', (langAlias) => {
+        socket.on('languageChanged', (langAlias : string) => {
             const language = configManager.loadLanguage(langAlias);
             const pebutraSettings = configManager.getPebutraSettings();
 
@@ -25,12 +25,12 @@ module.exports = (io, mainWindow) => {
             console.log(`Language Changed to ${language.fullName}`);
         });
 
-        socket.on('performLogin', (user) => {
+        socket.on('performLogin', (user : User) => {
             console.log('Should be fine!');
             mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
         });
 
-        socket.on('validateLoginForm', (user) => {
+        socket.on('validateLoginForm', (user : User) => {
             const loginValidation = LoginValidation(user);
             const validationResults = loginValidation.validateAll();
             const failedValidations = validationResults.filter((vr) => !vr.valid);
