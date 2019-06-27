@@ -3,15 +3,18 @@ import { Components } from "./sockets/InitSockets";
 import { InitRoutes } from "./routes/InitRoutes";
 import { InitSockets } from "./sockets/InitSockets";
 import { YAMLConfigManager } from "./configmanagement/YAMLConfigManager";
+import { logger } from "./util/Logger";
 
 import * as express from "express";
 import * as mustacheExpress from "mustache-express";
 import * as morgan from "morgan";
 
-
-process.env.CONFIG_DIR_PATH = `${process.env.PWD}/dist/conf/`;
-process.env.LANGUAGES_FOLDER = `${process.env.PWD}/dist/conf/languages/`;
-process.env.TESTS_DIR_PATH = `${process.env.PWD}/dist/tests/`;
+//=========================================================================================================
+logger.info("Application started.");
+process.env.APPLICATION_DIR = `${process.env.PWD}/dist`;
+process.env.CONFIG_DIR_PATH = `${process.env.APPLICATION_DIR}/conf/`;
+process.env.LANGUAGES_FOLDER = `${process.env.APPLICATION_DIR}/conf/languages/`;
+process.env.TESTS_DIR_PATH = `${process.env.APPLICATION_DIR}/tests/`;
 process.env.APPLICATION_PORT = '3000';
 process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}`;
 
@@ -52,7 +55,6 @@ function EntryPoint() {
     // Initialize the express routings by providing the default system language.
     InitRoutes(express_app, systemLanguage);
     
-
     let mainWindow = new BrowserWindow({
         width: 950,
         height: 600,
