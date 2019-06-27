@@ -5,8 +5,7 @@
       "outDir": "dist",
       "alwaysStrict" : true,
       "moduleResolution": "node",
-      "sourceMap": true,
-      "typeRoots": ["types"]
+      "sourceMap": true
     },
     "include": [
         "src/**/*"
