@@ -4,6 +4,7 @@ import { InitRoutes } from "./routes/InitRoutes";
 import { InitSockets } from "./sockets/InitSockets";
 import { YAMLConfigManager } from "./configmanagement/YAMLConfigManager";
 import { logger } from "./util/Logger";
+import * as path from "path";
 
 import * as express from "express";
 import * as mustacheExpress from "mustache-express";
@@ -59,7 +60,8 @@ function EntryPoint() {
         width: 950,
         height: 600,
         acceptFirstMouse: true,
-        show: false
+        show: false,
+        icon : path.join(__dirname, 'windows/assets/img/window-icon.png')
     });
 
     // Initialize application sockets
