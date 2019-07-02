@@ -24,7 +24,8 @@
       <script src="assets/lib/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
       <script type="text/javascript">
-        
+        const ipcRenderer = require('electron').ipcRenderer;
+
         $(document).ready(() => {
           
           const loginSocket = io(`${document.location.origin}/login`);
@@ -48,7 +49,7 @@
               $('#password').removeClass('is-invalid');
           });
 
-          loginSocket.on('loginValidationResult', (result) => {
+          ipcRenderer.on('loginValidationResult', (event, result) => {
 
             $('#username').removeClass('is-invalid');
             $('#password').removeClass('is-invalid');
@@ -73,7 +74,7 @@
                     password : $('#password').val()
                   };
 
-                  loginSocket.emit('performLogin', user);
+                  ipcRenderer.send('performLogin', user);
               }
           });
 
@@ -83,7 +84,7 @@
               });
 
             $('#btnExit').click(() => {
-                mainSocket.emit('exitApplication');
+                ipcRenderer.send('exitApplication');
             });
 
             $('#btnLogin').click(() => {
@@ -92,7 +93,7 @@
                   password : $('#password').val()
                 };
 
-                loginSocket.emit('validateLoginForm', user);
+                ipcRenderer.send('validateLoginForm', user);
             });
                       
         });

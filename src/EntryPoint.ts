@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog } from "electron";
-import { Components } from "./sockets/InitSockets";
+import { Components } from "./events/InitEvents";
 import { InitRoutes } from "./routes/InitRoutes";
-import { InitSockets } from "./sockets/InitSockets";
+import { InitEvents } from "./events/InitEvents";
 import { YAMLConfigManager } from "./configmanagement/YAMLConfigManager";
 import { logger } from "./util/Logger";
 import * as path from "path";
@@ -70,7 +70,7 @@ function EntryPoint() {
         mainWindow : mainWindow
     };
 
-    InitSockets(socketComponents);
+    InitEvents(socketComponents);
 
     mainWindow.loadURL(process.env.EXPRESS_URL);
     mainWindow.setMenuBarVisibility(false);
