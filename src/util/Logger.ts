@@ -58,8 +58,8 @@ const expressWinstonConsoleOptions : LoggerOptions = {
 const logger = createLogger(options);
 const expressWinstonLogger = expressWinston.logger(expressWinstonOptions);
 const expressWinstonConsoleLogger = expressWinston.logger(expressWinstonConsoleOptions);
-if (process.env.NODE_ENV !== 'production') 
-    logger.add(new transports.Console());
 
+if (process.env.NODE_ENV !== 'production') 
+    logger.add(new transports.Console({ format : consoleLogFormat}));
 
 export {logger, expressWinstonLogger, expressWinstonConsoleLogger};
