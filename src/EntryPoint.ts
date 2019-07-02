@@ -3,12 +3,11 @@ import { Components } from "./events/InitEvents";
 import { InitRoutes } from "./routes/InitRoutes";
 import { InitEvents } from "./events/InitEvents";
 import { YAMLConfigManager } from "./configmanagement/YAMLConfigManager";
-import { logger } from "./util/Logger";
-import * as path from "path";
+import { logger, expressWinstonLogger, expressWinstonConsoleLogger } from "./util/Logger";
 
+import * as path from "path";
 import * as express from "express";
 import * as mustacheExpress from "mustache-express";
-import * as morgan from "morgan";
 
 //=========================================================================================================
 logger.info("Application started.");
@@ -29,7 +28,10 @@ express_app.engine('html', mustacheExpress());
 express_app.use(express.static(VIEW_PATH));
 express_app.set('view engine', 'html');
 express_app.set('views', VIEW_PATH);
-express_app.use(morgan('short'));
+
+express_app.use(expressWinstonLogger);
+
+if (process.env.NODE_ENV !== 'production') express_app.use(expressWinstonConsoleLogger);
 
 function EntryPoint() {
 

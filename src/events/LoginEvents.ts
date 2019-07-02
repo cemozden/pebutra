@@ -27,7 +27,6 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
         });
 
         ipcMain.on('performLogin', (event : any, user : User) => {
-            console.log('Should be fine!');
             mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
         });
 
