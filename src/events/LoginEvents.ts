@@ -3,16 +3,17 @@ import { LoginValidation } from "../validations/LoginValidation";
 import { BrowserWindow } from "electron";
 import { User } from "../models/User";
 import { ipcMain } from "electron";
+import { logger } from "../util/Logger";
 
 const configManager = new YAMLConfigManager();
 
 export function LoginEvent(io : any, mainWindow : BrowserWindow) {
 
     io.of('/login').on('connection', (socket : any) => {
-        console.log('Socket.IO /login connection successful.');
+        logger.info('Socket.IO /login connection successful.');
         
         socket.on('disconnect', () => {
-            console.log('Socket.IO disconnected.');
+            logger.info('Socket.IO disconnected.');
         });
 
         socket.on('languageChanged', (langAlias : string) => {
@@ -23,7 +24,7 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
             configManager.writePebutraSettings(pebutraSettings);
 
             socket.emit('setupLanguage', language);
-            console.log(`Language Changed to ${language.fullName}`);
+            logger.info(`Language Changed to ${language.fullName}`);
         });
 
         ipcMain.on('performLogin', (event : any, user : User) => {

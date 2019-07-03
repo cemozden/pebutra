@@ -3,7 +3,9 @@
 import * as YAML from 'js-yaml';
 import * as fs from 'fs';
 import * as mustache from "mustache";
+
 import { MINIMUM_PASSWORD_LENGTH } from "../validations/ValidationConstants";
+import { logger } from "../util/Logger";
 
 const SETTINGS_YAML_LANGUAGE_PROPERTY_NAME = 'language';
 
@@ -111,7 +113,7 @@ export class YAMLConfigManager {
 
         fs.writeFile(process.env.CONFIG_DIR_PATH + 'settings.yaml', YAML.safeDump(pebutraSettings), (err) => {
             if (err) {
-                console.log('Unable to write to the settings.yaml file');
+                logger.info('Unable to write to the settings.yaml file');
             }
         });
     }

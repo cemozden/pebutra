@@ -41,7 +41,7 @@ function EntryPoint() {
     try {
         const pebutraSettings = configManager.getPebutraSettings();
         systemLanguage = configManager.loadLanguage(pebutraSettings.language);
-        console.log(`System Language: ${systemLanguage.fullName}`);
+        logger.info(`System Language: ${systemLanguage.fullName}`);
     }
     catch (error) {
         const options = {
@@ -87,5 +87,5 @@ function EntryPoint() {
     
 }
 
-http.listen(process.env.APPLICATION_PORT, () => { console.log(`ExpressJS started. URL: ::1:${process.env.APPLICATION_PORT}`) });
+http.listen(process.env.APPLICATION_PORT, () => { logger.info(`ExpressJS started. URL: ::1:${process.env.APPLICATION_PORT}`) });
 app.on('ready', EntryPoint);
