@@ -1,13 +1,13 @@
 import { app, BrowserWindow, dialog } from "electron";
-import { Components } from "./sockets/InitSockets";
+import { Components } from "./events/InitEvents";
 import { InitRoutes } from "./routes/InitRoutes";
-import { InitSockets } from "./sockets/InitSockets";
+import { InitEvents } from "./events/InitEvents";
 import { YAMLConfigManager } from "./configmanagement/YAMLConfigManager";
-import { logger } from "./util/Logger";
+import { logger, expressWinstonLogger, expressWinstonConsoleLogger } from "./util/Logger";
 
+import * as path from "path";
 import * as express from "express";
 import * as mustacheExpress from "mustache-express";
-import * as morgan from "morgan";
 
 //=========================================================================================================
 logger.info("Application started.");
@@ -28,7 +28,10 @@ express_app.engine('html', mustacheExpress());
 express_app.use(express.static(VIEW_PATH));
 express_app.set('view engine', 'html');
 express_app.set('views', VIEW_PATH);
-express_app.use(morgan('short'));
+
+express_app.use(expressWinstonLogger);
+
+if (process.env.NODE_ENV !== 'production') express_app.use(expressWinstonConsoleLogger);
 
 function EntryPoint() {
 
@@ -59,7 +62,8 @@ function EntryPoint() {
         width: 950,
         height: 600,
         acceptFirstMouse: true,
-        show: false
+        show: false,
+        icon : path.join(__dirname, 'windows/assets/img/window-icon.png')
     });
 
     // Initialize application sockets
@@ -68,7 +72,7 @@ function EntryPoint() {
         mainWindow : mainWindow
     };
 
-    InitSockets(socketComponents);
+    InitEvents(socketComponents);
 
     mainWindow.loadURL(process.env.EXPRESS_URL);
     mainWindow.setMenuBarVisibility(false);
