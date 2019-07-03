@@ -1,5 +1,8 @@
 import * as mysql from "mysql";
+
 import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
+import { logger } from "../util/Logger";
+
 const configManager = new YAMLConfigManager();
 const databaseSettings = configManager.getDatabaseSettings();
 
@@ -16,11 +19,11 @@ export function getConnectionInstance() {
       return pool.getConnection((err, connection) => {
           if (err) {
               connection.release();
-              console.log('Error to connect to the database server.');
+              logger.info('Error to connect to the database server.');
               return;
           }
         
-          console.log(`Connected to the database server "${databaseSettings.host}"`);
+          logger.info(`Connected to the database server "${databaseSettings.host}"`);
           return connection;
       });
 }
