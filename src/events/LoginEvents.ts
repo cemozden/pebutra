@@ -4,6 +4,7 @@ import { BrowserWindow } from "electron";
 import { User } from "../models/User";
 import { ipcMain } from "electron";
 import { logger } from "../util/Logger";
+import { UserServiceImpl } from "../services/UserService";
 
 const configManager = new YAMLConfigManager();
 
@@ -28,7 +29,10 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
         });
 
         ipcMain.on('performLogin', (event : any, user : User) => {
-            mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
+
+            const userService = new UserServiceImpl();
+            userService.userExist(user).then(exist => logger.info('User Exist?: ' + exist));
+
         });
 
         ipcMain.on('validateLoginForm', (event : any, user : User) => {

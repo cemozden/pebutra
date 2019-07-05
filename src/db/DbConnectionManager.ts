@@ -2,28 +2,20 @@ import * as mysql from "mysql";
 
 import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
 import { logger } from "../util/Logger";
+import { DatabaseConfig } from "./DatabaseConfig";
 
 const configManager = new YAMLConfigManager();
 const databaseSettings = configManager.getDatabaseSettings();
 
-const pool = mysql.createPool({
+const dbConfig : DatabaseConfig = {
     connectionLimit : 10,
-    host : databaseSettings.host,
-    user : databaseSettings.username,
-    password: databaseSettings.password,
-    database : databaseSettings.database
-});
+    host : databaseSettings.production.host,
+    user : databaseSettings.production.username,
+    password: databaseSettings.production.password,
+    database : databaseSettings.production.database
+};
 
-
-export function getConnectionInstance() {
-      return pool.getConnection((err, connection) => {
-          if (err) {
-              connection.release();
-              logger.info('Error to connect to the database server.');
-              return;
-          }
-        
-          logger.info(`Connected to the database server "${databaseSettings.host}"`);
-          return connection;
-      });
+export function getConnectionInstance(databaseConfig : DatabaseConfig = dbConfig) {
+      
+    return mysql.createPool(databaseConfig);
 }

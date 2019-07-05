@@ -1,3 +1,10 @@
+process.env.APPLICATION_DIR = `${process.env.PWD}/dist`;
+process.env.CONFIG_DIR_PATH = `${process.env.APPLICATION_DIR}/conf/`;
+process.env.LANGUAGES_FOLDER = `${process.env.APPLICATION_DIR}/conf/languages/`;
+process.env.TESTS_DIR_PATH = `${process.env.APPLICATION_DIR}/tests/`;
+process.env.APPLICATION_PORT = '3000';
+process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}`;
+
 import { app, BrowserWindow, dialog } from "electron";
 import { Components } from "./events/InitEvents";
 import { InitRoutes } from "./routes/InitRoutes";
@@ -11,12 +18,7 @@ import * as mustacheExpress from "mustache-express";
 
 //=========================================================================================================
 logger.info("Application started.");
-process.env.APPLICATION_DIR = `${process.env.PWD}/dist`;
-process.env.CONFIG_DIR_PATH = `${process.env.APPLICATION_DIR}/conf/`;
-process.env.LANGUAGES_FOLDER = `${process.env.APPLICATION_DIR}/conf/languages/`;
-process.env.TESTS_DIR_PATH = `${process.env.APPLICATION_DIR}/tests/`;
-process.env.APPLICATION_PORT = '3000';
-process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}`;
+
 
 const express_app = express();
 const http = require('http').Server(express_app);

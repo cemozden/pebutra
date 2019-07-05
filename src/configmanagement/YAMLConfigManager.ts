@@ -19,11 +19,22 @@ interface LanguageInfo {
 }
 
 interface DatabaseSettings {
-    host : string
-    username: string
-    password : string
-    database : string
-    connectionPoolLimit : number
+    production : {
+        host : string
+        username: string
+        password : string
+        database : string
+        connectionPoolLimit : number
+    }
+    
+    test : {
+        host : string
+        username: string
+        password : string
+        database : string
+        connectionPoolLimit : number
+    }
+
 }
 
 export class YAMLConfigManager {
@@ -42,7 +53,7 @@ export class YAMLConfigManager {
     }
 
     getDatabaseSettings() : DatabaseSettings {
-        const databaseSettings = YAML.safeLoad(fs.readFileSync(process.env.CONFIG_DIR_PATH + 'db_conf.yaml'));
+        const databaseSettings = YAML.safeLoad(fs.readFileSync(`${process.env.CONFIG_DIR_PATH}db_conf.yaml`));
 
         return databaseSettings;
     }
@@ -113,7 +124,7 @@ export class YAMLConfigManager {
 
         fs.writeFile(process.env.CONFIG_DIR_PATH + 'settings.yaml', YAML.safeDump(pebutraSettings), (err) => {
             if (err) {
-                logger.info('Unable to write to the settings.yaml file');
+                logger.error('Unable to write to the settings.yaml file');
             }
         });
     }
