@@ -31,7 +31,19 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
         ipcMain.on('performLogin', (event : any, user : User) => {
 
             const userService = new UserServiceImpl();
-            userService.userExist(user).then(exist => logger.info('User Exist?: ' + exist));
+            userService.userExist(user)
+                .then(userExist => {
+                    // If the username or password is wrong, then send a message to the client.
+                    if (!userExist) { 
+                        const language = configManager.getDefaultLanguage();
+                        event.sender.send('performLoginError', language.validation.login.loginFailed); 
+                    }
+                    else {
+                        mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
+                    }
+
+                })
+                .catch((err : Error) => event.sender.send('performLoginError', err.message));
 
         });
 

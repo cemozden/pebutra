@@ -18,6 +18,12 @@ export class UserServiceImpl implements UserService {
     userExist(user : User) : Promise<boolean> {
 
         const userExistPromise = new Promise<boolean>((resolve, reject) => {
+
+            if (user.username === undefined || user.password === undefined) {
+                reject(new Error('Username or password cannot be undefined'));
+                return;
+            }
+
             this.dbConnectionPool.getConnection((err, connection) => {
 
                 if (err) {
@@ -30,7 +36,7 @@ export class UserServiceImpl implements UserService {
                     (error : any, results : any, fields : any) => {
                                         
                         if (error) {
-                            logger.error(error);
+                            logger.error(error.toString());
                             reject(error);
                             connection.release();
                         }

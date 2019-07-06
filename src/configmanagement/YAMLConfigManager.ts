@@ -75,18 +75,14 @@ export class YAMLConfigManager {
         const languageObject = YAML.safeLoad(fs.readFileSync(languageFilePath));
         
         const languageVariableValues = {
-               year : new Date().getFullYear(),
+            year : new Date().getFullYear(),
             creator : process.env.npm_package_author_name,
-            version : process.env.npm_config_init_version,
-            minPasswordLength : MINIMUM_PASSWORD_LENGTH
+            version : process.env.npm_config_init_version
         };
         
-        // Replace mustache variables with the given value object.
-        for (const langKey in languageObject) {
-            if (languageObject.hasOwnProperty(langKey)) 
-                languageObject[langKey] = mustache.render(languageObject[langKey], languageVariableValues);
-        }
-
+        // Replace constant mustache variables with the given object replacement object above.      
+        languageObject.pebutraInfo = mustache.render(languageObject.pebutraInfo, languageVariableValues);
+  
         return languageObject;
     }
 
