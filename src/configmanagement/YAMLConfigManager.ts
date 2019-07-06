@@ -3,7 +3,9 @@
 import * as YAML from 'js-yaml';
 import * as fs from 'fs';
 import * as mustache from "mustache";
+
 import { MINIMUM_PASSWORD_LENGTH } from "../validations/ValidationConstants";
+import { logger } from "../util/Logger";
 
 const SETTINGS_YAML_LANGUAGE_PROPERTY_NAME = 'language';
 
@@ -17,11 +19,22 @@ interface LanguageInfo {
 }
 
 interface DatabaseSettings {
-    host : string
-    username: string
-    password : string
-    database : string
-    connectionPoolLimit : number
+    production : {
+        host : string
+        username: string
+        password : string
+        database : string
+        connectionPoolLimit : number
+    }
+    
+    test : {
+        host : string
+        username: string
+        password : string
+        database : string
+        connectionPoolLimit : number
+    }
+
 }
 
 export class YAMLConfigManager {
@@ -40,7 +53,7 @@ export class YAMLConfigManager {
     }
 
     getDatabaseSettings() : DatabaseSettings {
-        const databaseSettings = YAML.safeLoad(fs.readFileSync(process.env.CONFIG_DIR_PATH + 'db_conf.yaml'));
+        const databaseSettings = YAML.safeLoad(fs.readFileSync(`${process.env.CONFIG_DIR_PATH}db_conf.yaml`));
 
         return databaseSettings;
     }
@@ -62,18 +75,14 @@ export class YAMLConfigManager {
         const languageObject = YAML.safeLoad(fs.readFileSync(languageFilePath));
         
         const languageVariableValues = {
-               year : new Date().getFullYear(),
+            year : new Date().getFullYear(),
             creator : process.env.npm_package_author_name,
-            version : process.env.npm_config_init_version,
-            minPasswordLength : MINIMUM_PASSWORD_LENGTH
+            version : process.env.npm_config_init_version
         };
         
-        // Replace mustache variables with the given value object.
-        for (const langKey in languageObject) {
-            if (languageObject.hasOwnProperty(langKey)) 
-                languageObject[langKey] = mustache.render(languageObject[langKey], languageVariableValues);
-        }
-
+        // Replace constant mustache variables with the given object replacement object above.      
+        languageObject.pebutraInfo = mustache.render(languageObject.pebutraInfo, languageVariableValues);
+  
         return languageObject;
     }
 
@@ -111,7 +120,7 @@ export class YAMLConfigManager {
 
         fs.writeFile(process.env.CONFIG_DIR_PATH + 'settings.yaml', YAML.safeDump(pebutraSettings), (err) => {
             if (err) {
-                console.log('Unable to write to the settings.yaml file');
+                logger.error('Unable to write to the settings.yaml file');
             }
         });
     }

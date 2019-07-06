@@ -10,13 +10,13 @@ export function LoginValidation(validationObject : User) {
 
     formValidation.addOrUpdateValidation('username', (vo) => {
         if (vo.username.length < MINIMUM_USERNAME_LENGTH) 
-            return {validationName : 'username', valid : false, message : language.val_UsernameEmpty}; 
+            return {validationName : 'username', valid : false, message : language.validation.login.usernameEmpty}; 
         
         return {validationName : 'username', valid : true, message : 'OK'};
     });
 
     formValidation.addOrUpdateValidation('password', (vo) => {
-        const passwordLengthErrorMessage = language.val_PasswordLengthLimit.replace('${minPasswordLength}', MINIMUM_PASSWORD_LENGTH);
+        const passwordLengthErrorMessage = language.validation.login.passwordLengthLimit.replace('${minPasswordLength}', MINIMUM_PASSWORD_LENGTH);
         if (vo.password.length < MINIMUM_PASSWORD_LENGTH) 
             return {validationName : 'password', valid : false, message : passwordLengthErrorMessage};
 

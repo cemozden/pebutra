@@ -1,6 +1,17 @@
-# Database Settings
-host : "localhost"
-username: "cem"
-password : "123456"
-database : "PEBUTRA"
-connectionPoolLimit : 10
+# Production Database Settings
+
+production:
+  host : "localhost"
+  username: "pebadmin"
+  password : "p3butr4"
+  database : "PEBUTRA"
+  connectionPoolLimit : 10
+
+# Test Database Settings
+
+test:
+  host : "localhost"
+  username: "pebadmin"
+  password : "p3butr4"
+  database : "PEBUTRA_TEST"
+  connectionPoolLimit : 10

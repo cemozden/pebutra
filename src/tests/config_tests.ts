@@ -37,37 +37,6 @@ describe('Configuration', () => {
                 assert.ok(fs.existsSync(langEnFilePath), `The english language file cannot be found in the path: ${langEnFilePath}`)
             });
 
-        it('should contain requiredlanguagekeys.txt file to check the required keys',
-            () => {
-                const requiredLanguageKeysFilePath = `${process.env.TESTS_DIR_PATH}/resources/requiredlanguagekeys.txt`;
-                assert.ok(fs.existsSync(requiredLanguageKeysFilePath));
-        });
-
-        it('should contain all required language keys', () => {
-            
-            fs.readFile(`${process.env.TESTS_DIR_PATH}resources/requiredlanguagekeys.txt`,'utf8', (err, data) => {
-                const requiredLanguageKeys = data.split('\n');
-  
-                fs.readdir(process.env.LANGUAGES_FOLDER, 'utf8', (err, files) => {
-
-                    if (err) {
-                        throw err;
-                    }
-
-                    files.forEach((file) => {
-                        const languageFilePath = process.env.LANGUAGES_FOLDER + file;        
-                        const languageFileObject = YAML.safeLoad(fs.readFileSync(languageFilePath));
-                        
-                        requiredLanguageKeys.filter((key) => key != undefined && key != "").
-                        forEach((requiredKey) => assert.ok(languageFileObject.hasOwnProperty(requiredKey), 
-                            `"${requiredKey}" key doesn't exist in the language file ${file}`));
-                    });  
-                });
-
-            });
-
-        });
-
         describe('YAMLConfigManager', () => {
             describe('#loadLanguage(langAlias)', () => {
                 const configManager = new YAMLConfigManager();

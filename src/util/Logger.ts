@@ -4,13 +4,13 @@ import * as expressWinston from "express-winston";
 
 const logFormat = format.combine(
     format.timestamp(),
-    format.align(),
+    //format.align(),
     format.printf(info => `${info.timestamp} [${info.level}]: ${info.message}`)
   );
 
 const consoleLogFormat = format.combine(
     format.timestamp(),
-    format.align(),
+    //format.align(),
     format.colorize(),
     format.printf(info => `${info.timestamp} [${info.level}]: ${info.message}`)
   );
