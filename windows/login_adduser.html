@@ -44,6 +44,19 @@
               $('#createAccount').text(lang.createYourOwnAccount);
               $('#pebutraInfo').text(lang.pebutraInfo);
               $('#loginModalTitle').html(lang.validation.login.loginFailedTitle);
+              $('#addUserPasswordInvalidFeedback').html(lang.validation.addUser.passwordDoesntMatch);
+
+              // Add User language config.
+              $('#addUserDialogTitle').html(lang.addUser);
+              $('#addUserDescription').html(lang.addUserDescription);
+              $('#lblAddUserUsername').html(lang.username);
+              $('#lblAddUserPassword').html(lang.password);
+              $('#lblAddUserPasswordConfirm').html(lang.passwordConfirm);
+              $('#lblAddUserName').html(lang.name);
+              $('#lblAddUserSurname').html(lang.surname);
+              $('#lblAddUserEmailAddress').html(lang.emailAddress);
+              $('#btnCloseAddUserDialog').text(lang.close);
+              $('#btnAddUser').text(lang.addUser);
 
               $('#username').removeClass('is-invalid');
               $('#password').removeClass('is-invalid');
@@ -101,6 +114,43 @@
 
                 ipcRenderer.send('validateLoginForm', user);
             });
+
+            // Add User JS settings
+
+            $('#createAccount').click(() => {
+              $('#addUserDialog').modal();
+            });
+
+            $('#btnAddUser').click(() => {
+              
+              $('#addUserUsername').removeClass('is-invalid');
+              $('#addUserPassword').removeClass('is-invalid');
+              $('#addUserPasswordConfirm').removeClass('is-invalid');
+              $('#addUserName').removeClass('is-invalid');
+              $('#addUserSurname').removeClass('is-invalid');
+              $('#addUserEmailAddress').removeClass('is-invalid');
+
+              const password = $('#txtAddUserPassword').val();
+              const confirmPassword = $('#txtAddUserPasswordConfirm').val();
+              
+              if (password !== confirmPassword){
+                $('#txtAddUserPassword').addClass('is-invalid');
+                $('#txtAddUserPasswordConfirm').addClass('is-invalid');
+                return;
+              }
+
+              const user = {
+                username : $('#txtAddUserUsername').val(),
+                password : $('#txtAddUserPassword').val(),
+                name : $('#txtAddUserName').val(),
+                surname : $('#txtAddUserSurname').val(),
+                emailAddress : $('#txtAddUserEmailAddress').val()
+              };
+
+              ipcRenderer.send('addUserProcess', user);
+
+            });
+
                       
         });
         
@@ -158,10 +208,75 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p id="loginModalMessage">Modal body text goes here.</p>
+                  <p id="loginModalMessage"></p>
                 </div>
               </div>
             </div>
           </div>
+          <!-- Add User Dialog START -->
+          <div class="modal fade" id="addUserDialog" tabindex="-1" role="dialog" aria-labelledby="addUserDialog" aria-hidden="false">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="addUserDialogTitle">{{language.addUser}}</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-12"><p id="addUserDescription">{{ language.addUserDescription }}</p></div>
+                  </div>
+                  <div class="row">
+                      <div class="col-sm-6 mx-auto">
+                          <form method="POST" id="addUserForm" class="needs-validation">
+                              <!-- Add User username textfield-->
+                              <div class="form-group">
+                                <label for="addUserUsername" id="lblAddUserUsername">{{language.username}}</label>
+                                <input type="text"  class="form-control form-control-sm" id="txtAddUserUsername">
+                                <div id="addUserUsernameInvalidFeedback" class="invalid-feedback ">{{language.validation.addUser.passwordDoesntMatch}}</div>
+                              </div>
+                              <!-- Add User password textfield-->
+                              <div class="form-group">
+                                <label for="addUserPassword" id="lblAddUserPassword">{{language.password}}</label>
+                                <input type="password" class="form-control form-control-sm" id="txtAddUserPassword">
+                                <div id="addUserPasswordInvalidFeedback" class="invalid-feedback ">{{language.validation.addUser.passwordDoesntMatch}}</div>
+                              </div>
+                              <!-- Add User password confirm textfield-->
+                              <div class="form-group">
+                                  <label for="addUserPasswordConfirm" id="lblAddUserPasswordConfirm">{{language.passwordConfirm}}</label>
+                                  <input type="password" class="form-control form-control-sm" id="txtAddUserPasswordConfirm">
+                                  <div id="addUserPasswordConfirmInvalidFeedback" class="invalid-feedback"></div>
+                              </div>
+                              <!-- Add User Name textfield -->
+                              <div class="form-group">
+                                  <label for="addUserName" id="lblAddUserName">{{language.name}}</label>
+                                  <input type="text" class="form-control form-control-sm" id="txtAddUserName">
+                                  <div id="addUserNameInvalidFeedback" class="invalid-feedback "></div>
+                              </div>
+                              <!-- Add User Surname textfield -->
+                              <div class="form-group">
+                                  <label for="addUserSurname" id="lblAddUserSurname">{{language.surname}}</label>
+                                  <input type="text" class="form-control form-control-sm" id="txtAddUserSurname">
+                                  <div id="addUserSurnameInvalidFeedback" class="invalid-feedback "></div>
+                              </div>
+                              <!-- Add User Email Address -->
+                              <div class="form-group">
+                                  <label for="addUserEmailAddress" id="lblAddUserEmailAddress">{{language.emailAddress}}</label>
+                                  <input type="text" class="form-control form-control-sm" id="txtAddUserEmailAddress">
+                                  <div id="addUserEmailAddressInvalidFeedback" class="invalid-feedback "></div>
+                              </div>
+                            </form>
+                      </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="btnCloseAddUserDialog" class="btn btn-secondary" data-dismiss="modal">{{language.close}}</button>
+                  <button type="button" id="btnAddUser" class="btn btn-primary">{{language.addUser}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Add User Dialog END -->
   </body>
 </html>

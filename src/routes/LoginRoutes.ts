@@ -14,7 +14,7 @@ export function LoginRoutes(app : any, systemLanguage : any) {
             optionOutput = optionOutput + `<option value="${al.alias}" ${selected}>${al.fullName}</option>`;
         });
         
-        res.render('login', { language : systemLanguage, 
+        res.render('login_adduser', { language : systemLanguage, 
                               languageOptions : optionOutput
                             });
     });
