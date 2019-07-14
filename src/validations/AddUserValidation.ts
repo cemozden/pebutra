@@ -1,5 +1,5 @@
 import { User } from "../models/User";
-import { FormValidation } from "./FormValidation";
+import { FormValidation } from "./Validation";
 import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
 import { MINIMUM_PASSWORD_LENGTH } from "./ValidationConstants";
 

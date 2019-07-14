@@ -4,6 +4,7 @@ process.env.LANGUAGES_FOLDER = `${process.env.APPLICATION_DIR}/conf/languages/`;
 process.env.TESTS_DIR_PATH = `${process.env.APPLICATION_DIR}/tests/`;
 process.env.APPLICATION_PORT = '3000';
 process.env.EXPRESS_URL = `http://localhost:${process.env.APPLICATION_PORT}`;
+process.env.ID_LENGTH = '10';
 
 import { app, BrowserWindow, dialog } from "electron";
 import { Components } from "./events/InitEvents";

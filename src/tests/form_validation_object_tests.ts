@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { FormValidation } from "../validations/FormValidation";
+import { FormValidation } from "../validations/Validation";
 
 describe('FormValidation', () => {
     

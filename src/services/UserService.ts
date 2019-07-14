@@ -2,9 +2,12 @@ import { User } from "../models/User";
 import * as db from "../db/DbConnectionManager";
 import { logger } from "../util/Logger";
 import { Pool } from "mysql";
+import { generateID } from "../util/IDUtil";
 
 export interface UserService {
     userExist(user : User) : Promise<boolean>;
+    addUser(user : User) : Promise<boolean>;
+    deleteUser(user : User) : Promise<boolean>;
 }
 
 export class UserServiceImpl implements UserService {
@@ -48,6 +51,68 @@ export class UserServiceImpl implements UserService {
         });
 
         return userExistPromise;        
+    }
+
+    addUser(user : User) : Promise<boolean> {
+        
+        user.userId = generateID((process.env.ID_LENGTH as unknown) as number);
+
+        const addUserPromise = new Promise<boolean>((resolve, reject) => {
+            this.dbConnectionPool.getConnection((err, connection) => {
+                if (err) {
+                    logger.error(err);
+                    reject(err);
+                    connection.release();
+                }
+
+                connection.query('INSERT INTO USERS VALUES (?, ?, ?, ?, ?, ?);', 
+                [   
+                    user.userId, 
+                    user.username,
+                    user.password,
+                    user.name,
+                    user.surname,
+                    user.emailAddress
+                ], (err, results) => {
+                        if (err) {
+                            logger.error(err);
+                            reject(err);
+                            connection.release();
+                        }
+
+                        resolve(results.affectedRows === 1);
+                    });
+
+            });
+        });
+
+        return addUserPromise;
+    }
+
+    deleteUser(user: User) : Promise<boolean> {
+        const deleteUserPromise = new Promise<boolean>((resolve, reject) => {
+            this.dbConnectionPool.getConnection((err, connection) => {
+                if (err) {
+                    logger.error(err);
+                    reject(err);
+                    connection.release();
+                }
+
+                connection.query('DELETE FROM USERS WHERE username LIKE ?', [user.username], (err, results) => {
+                    if (err) {
+                        logger.error(err);
+                        reject(err);
+                        connection.release();
+                    }
+                    
+                    resolve(results.affectedRows === 1);
+                    
+                });
+
+            });
+        });
+
+        return deleteUserPromise;
     }
 
 }

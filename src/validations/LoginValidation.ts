@@ -1,4 +1,4 @@
-import { FormValidation } from "./FormValidation";
+import { FormValidation } from "./Validation";
 import {MINIMUM_PASSWORD_LENGTH, MINIMUM_USERNAME_LENGTH} from './ValidationConstants';
 import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
 import { User } from "../models/User";
