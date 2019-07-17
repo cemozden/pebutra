@@ -9,10 +9,12 @@
     "start": "NODE_ENV=production electron .",
     "build": "npm run-script clean && tsc && npm run-script copyassets && npm test",
     "buildrun": "npm run-script build && npm start",
-    "test": "mocha -R spec dist/tests"
+    "copyrun" : "npm run-script copyassets && npm start",
+    "test": "NODE_ENV=test node dist/run_tests.js"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
+    "@types/express": "^4.17.0",
     "@types/mocha": "^5.2.7",
     "@types/mysql": "^2.15.6",
     "@types/node": "^12.0.10",

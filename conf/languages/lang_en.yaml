@@ -5,6 +5,7 @@ dateFormat : "MM/dd/yyyy"
 locale : "en_US"
 username : "Username"
 password : "Password"
+passwordConfirm: "Confirm your password"
 exit : "Exit"
 close : "Close"
 language : "Language"
@@ -25,15 +26,18 @@ pebutraInfo : "{{year}}, Pebutra Created by {{creator}} | Version: {{version}} |
 login : "Login"
 unableToLogin : "Unable to login! Username or password is incorrect."
 forgotMyPassword : "I forgot my password"
+hitYourUsername : "Hit your username!"
+saveUsername : "Save my username after log in"
+createYourOwnAccount : "Create one!"
+loginPageTitle : "Pebutra, Your Personal Budget Tracker! | Login"
+dontHaveAnAccount : "Don't you have an account?"
+
+
+#Add User Properties
 addUser : "Add User"
 addUserDescription : "In order to manage your budget, Pebutra requires you to create your own account. By creating your account, You can easily start managing your budget!"
 addUserSuccessful : "${username} is successfully added to the system. Now, You can start managing your budget!"
 addUserFailed : "Adding ${username} failed!"
-hitYourUsername : "Hit your username!"
-saveUsername : "Save my username after log in"
-createYourOwnAccount : "Create one!"
-dontHaveAnAccount : "Don't you have an account?"
-loginPageTitle : "Pebutra, Your Personal Budget Tracker! | Login"
 
 # Validation Properties
 validation:
@@ -42,11 +46,14 @@ validation:
     usernameEmpty : "Your username cannot be empty"
     loginFailed : "Login failed! Please make sure you provided valid username and password."
     loginFailedTitle : "Login Failed"
-  
-  val_emailAddressNotValid : "${emailAddress} is not a valid e-mail address."
-  val_EmailAddressEmpty : "Your e-mail address cannot be empty."
-  val_NameEmpty : "Your name cannot be empty."
-  val_SurnameEmpty : "You surname cannot be empty"
-  val_UsernameExist : "There exist a user named ${username}"
-  val_UsernameSpecialCharacters : "Your username can only contain letters and numbers"
-  val_AddUserFailedDescription : "There are validation errors in the user form."
+
+  addUser:
+    emailAddressNotValid : "${emailAddress} is not a valid e-mail address."
+    emailAddressEmpty : "Your e-mail address cannot be empty."
+    nameEmpty : "Your name cannot be empty."
+    passwordEmpty : "Your password cannot be empty"
+    surnameEmpty : "You surname cannot be empty"
+    usernameExist : "There exist a user named ${username}"
+    usernameSpecialCharacters : "Your username can only contain letters, numbers and . [dot]"
+    addUserFailedDescription : "There are validation errors in the user form."
+    passwordDoesntMatch : "Passwords do not match! Please confirm your password."
