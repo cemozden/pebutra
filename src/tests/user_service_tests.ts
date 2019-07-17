@@ -1,30 +1,13 @@
 import { assert } from "chai";
 import { UserServiceImpl } from "../services/UserService";
 import { User } from "../models/User";
-import { DatabaseConfig } from "../db/DatabaseConfig";
-import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
-
-import * as db from "../db/DbConnectionManager";
 
 import 'mocha';
-
-process.env.ID_LENGTH = '10';
+import { connectionPool } from "../db/DbConnectionManager";
 
 describe('UserService', () => {
-    const configManager = new YAMLConfigManager();
-    const testSettings = configManager.getDatabaseSettings().test;
-    
-    // Setting up database configurations 
-    const pebutra_test_settings : DatabaseConfig = {
-        host : testSettings.host,
-        user : testSettings.username,
-        password : testSettings.password,
-        database : testSettings.database,
-        connectionLimit : testSettings.connectionPoolLimit
-    };
 
-    const connectionInstance = db.getConnectionInstance(pebutra_test_settings);
-    const userService = new UserServiceImpl(connectionInstance);
+    const userService = new UserServiceImpl();
 
     describe('#userExist(user : User) : Promise<boolean>', () => {
         it('should yield false when the parameters are undefined', async () => {
@@ -69,10 +52,6 @@ describe('UserService', () => {
             assert.isTrue(deleteTempUser, `Unable to delete temporary user.`);
         });
 
-    });
-
-    after(() => {
-        connectionInstance.end();
     });
 
 });

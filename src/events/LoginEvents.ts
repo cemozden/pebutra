@@ -5,6 +5,7 @@ import { User } from "../models/User";
 import { ipcMain } from "electron";
 import { logger } from "../util/Logger";
 import { UserServiceImpl } from "../services/UserService";
+import { ValidationResult } from "../validations/Validation";
 
 const configManager = new YAMLConfigManager();
 
@@ -47,13 +48,15 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
 
         });
 
-        ipcMain.on('validateLoginForm', (event : any, user : User) => {
+        ipcMain.on('validateLoginForm', async (event : any, user : User) => {
             const loginValidation = LoginValidation(user);
-            const validationResults = loginValidation.validateAll();
-            const failedValidations = validationResults.filter((vr) => !vr.valid);
+
+            loginValidation.validateAll().then(validationResults => {
+                const failedValidations = validationResults.filter((vr) => !vr.valid);
             
-            if (failedValidations.length > 0) event.sender.send('loginValidationResult', {validAll : false, validationResults : validationResults}) ; //socket.emit('loginValidationResult', {validAll : false, validationResults : validationResults});
-            else event.sender.send('loginValidationResult', {validAll : true, validationResults : []});
+                if (failedValidations.length > 0) event.sender.send('loginValidationResult', {validAll : false, validationResults : validationResults});
+                else event.sender.send('loginValidationResult', {validAll : true, validationResults : []});
+            });
             
         });
 

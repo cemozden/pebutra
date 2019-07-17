@@ -7,8 +7,8 @@
  export class FormValidation<T> {
 
      private _validationObject : T;
-     private readonly validationProcessors : Map<string, (validationObject : T) => ValidationResult> = 
-                 new Map<string, (validationObject : T) => ValidationResult>();
+     private readonly validationProcessors : Map<string, (validationObject : T) => Promise<ValidationResult>> = 
+                 new Map<string, (validationObject : T) => Promise<ValidationResult>>();
  
      constructor(validationObject : T) {
          this.validationObject = validationObject;
@@ -25,7 +25,7 @@
      /**
       * 
       */
-     addOrUpdateValidation(name : string, validationFunction : (validationObject : T) => ValidationResult) {
+     addOrUpdateValidation(name : string, validationFunction : (validationObject : T) => Promise<ValidationResult>) {
          this.validationProcessors.set(name, validationFunction);
      }
  
@@ -50,18 +50,17 @@
       * @param {string} name
       * @returns {ValidationResult} 
       */
-     validate(name : string) : ValidationResult {
+     validate(name : string) : Promise<ValidationResult> {
          return this.validationProcessors.get(name)(this.validationObject);
      }
  
-     validateAll() : ValidationResult[] {
+     async validateAll() : Promise<ValidationResult[]> {
          const validationNames = this.validationProcessors.keys();
          const validationResults : ValidationResult[] = [];
          
-         for (const name of validationNames) {
-             validationResults.push(this.validationProcessors.get(name)(this.validationObject));
-         }
- 
+         for (const name of validationNames)
+            validationResults.push(await this.validationProcessors.get(name)(this.validationObject));
+         
          return validationResults;
      }
  

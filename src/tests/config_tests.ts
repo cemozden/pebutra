@@ -1,6 +1,5 @@
 import { assert } from "chai";
 import * as fs from 'fs';
-import * as YAML from "js-yaml";
 import 'mocha';
 import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
 

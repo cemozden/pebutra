@@ -10,7 +10,7 @@
     "build": "npm run-script clean && tsc && npm run-script copyassets && npm test",
     "buildrun": "npm run-script build && npm start",
     "copyrun" : "npm run-script copyassets && npm start",
-    "test": "mocha -R spec dist/tests"
+    "test": "NODE_ENV=test node dist/run_tests.js"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

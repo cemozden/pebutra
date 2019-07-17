@@ -1,5 +1,6 @@
 import { assert } from "chai";
-import { FormValidation } from "../validations/Validation";
+import { FormValidation, ValidationResult } from "../validations/Validation";
+import { resolve } from "url";
 
 describe('FormValidation', () => {
     
@@ -16,9 +17,16 @@ describe('FormValidation', () => {
         it('should increase the number of validation after adding a new validation', () => {
             const formValidation = new FormValidation({});
             assert.equal(formValidation.getValidationCount(), 0, 'Number of validations is not 0 when the object is initialized');
-            formValidation.addOrUpdateValidation('test', (vo) => { return { validationName : 'test', valid : true, message : 'none' }});
-            assert.equal(formValidation.getValidationCount(), 1, 'The number of validations did not increase after adding a new validation');
             
+            formValidation.addOrUpdateValidation('test', vo => {
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({ validationName : 'test', valid : true, message : 'none' });
+                });
+
+                return validationPromise;                
+            });
+
+            assert.equal(formValidation.getValidationCount(), 1, 'The number of validations did not increase after adding a new validation');
         });
     });
 
@@ -30,7 +38,14 @@ describe('FormValidation', () => {
 
         it('should yield true when there is validation specified as the parameter', () => {
             const formValidation = new FormValidation({});
-            formValidation.addOrUpdateValidation('test', (vo) => { return {validationName : 'test', valid : true, message : 'none'}});
+            formValidation.addOrUpdateValidation('test', vo => { 
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({validationName : 'test', valid : true, message : 'none'});
+                });
+                
+                return validationPromise;
+                
+            });
             assert.ok(formValidation.isValidationExist('test'), 'isValidationExist() does not return true when it finds corresponding validation');
         });
     });
@@ -39,10 +54,22 @@ describe('FormValidation', () => {
         it('should return validation names when it is called', () => {
             const formValidation = new FormValidation({});
 
-            formValidation.addOrUpdateValidation('test', (vo) => { return {validationName : 'test', valid : true, message : 'none'}});
+            formValidation.addOrUpdateValidation('test', vo => { 
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({validationName : 'test', valid : true, message : 'none'});
+                });
+
+                return validationPromise;
+            });
             assert.ok(formValidation.getValidationNames().includes('test'), 'Validation name is not returned after adding a new validation. Validation name: test');
 
-            formValidation.addOrUpdateValidation('test2', (vo) => { return {validationName : 'test2', valid : true, message : 'none'}});
+            formValidation.addOrUpdateValidation('test2', vo => { 
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({validationName : 'test2', valid : true, message : 'none'});
+                });
+
+                return validationPromise;
+            });
             assert.ok(formValidation.getValidationNames().includes('test'), 'Validation name is not returned after adding a new validation Validation name: test');
             assert.ok(formValidation.getValidationNames().includes('test2'), 'Validation name is not returned after adding a new validation Validation name: test2');
 
@@ -53,7 +80,13 @@ describe('FormValidation', () => {
         it('should remove the given validation', () => {
             const formValidation = new FormValidation({});
 
-            formValidation.addOrUpdateValidation('test', (vo) => { return { validationName : 'test', valid : true, message : 'none' }});
+            formValidation.addOrUpdateValidation('test', vo => { 
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({ validationName : 'test', valid : true, message : 'none' });
+                });
+
+                return validationPromise;
+            });
             formValidation.removeValidation('test');
 
             assert.isFalse(formValidation.isValidationExist('test'), 'removeValidation(name) does not remove given validation!');
@@ -62,7 +95,14 @@ describe('FormValidation', () => {
         it('should remove the number of validations after removing a validation', () => {
             const formValidation = new FormValidation({});
 
-            formValidation.addOrUpdateValidation('test', (vo) => { return { validationName : 'test', valid : true, message : 'none' }});
+            formValidation.addOrUpdateValidation('test', vo => { 
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({ validationName : 'test', valid : true, message : 'none' });
+                });
+
+                return validationPromise;
+                
+            });
             assert.equal(formValidation.getValidationCount(), 1);
             
             formValidation.removeValidation('test');
@@ -71,15 +111,25 @@ describe('FormValidation', () => {
     });
 
     describe('#validateAll(name)', () => {
-        it('should validate all validations', () => {
+        it('should validate all validations', async () => {
             const formValidation = new FormValidation({});
 
-            formValidation.addOrUpdateValidation('test', (vo) => {return {validationName : 'test', valid : true, message : 'OK'}});
-            formValidation.addOrUpdateValidation('test2', (vo) => {return {validationName : 'test', valid : false, message : 'Failed'}});
+            formValidation.addOrUpdateValidation('test', vo => {
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({validationName : 'test', valid : true, message : 'OK'});
+                });
+                
+                return validationPromise;
+            });
+            formValidation.addOrUpdateValidation('test2', vo => {
+                const validationPromise = new Promise<ValidationResult>((resolve, reject) => {
+                    resolve({validationName : 'test', valid : false, message : 'Failed'});
+                });
+                
+                return validationPromise;
+            });
 
-            const validationResults = formValidation.validateAll();
-            assert.equal(validationResults.length, 2, `validateAll() does not validate all validations.`);
-
+            formValidation.validateAll().then(validationResults => assert.equal(validationResults.length, 2, `validateAll() does not validate all validations.`));
         });
     });
 

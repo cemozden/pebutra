@@ -1,4 +1,4 @@
-const CHARACTER_SET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789012345678901234567890123456789012345678901'
+const CHARACTER_SET = 'abcdefghijklmnopqrstuvwxyz01234567890123456789'
 
 export function generateID(length : number) : string {
     let id = '';
