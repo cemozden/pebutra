@@ -1,5 +1,5 @@
 import { User } from "../models/User";
-import  {connectionPool} from "../db/DbConnectionManager";
+import { connectionPool } from "../db/DbConnectionManager";
 import { logger } from "../util/Logger";
 import { generateID } from "../util/IDUtil";
 
@@ -57,8 +57,9 @@ export class UserServiceImpl implements UserService {
                             reject(err);
                            
                         }
-
-                        resolve(results.affectedRows === 1);
+                        const affectedRows = results.affectedRows;
+                        logger.info(`UserService.#addUser() Affected Rows number: ${affectedRows}`);
+                        resolve(affectedRows === 1);
                     });
         });
 
@@ -74,7 +75,9 @@ export class UserServiceImpl implements UserService {
                 reject(err);
             }
             
-            resolve(results.affectedRows === 1);
+            const affectedRows = results.affectedRows;
+            logger.info(`UserService.#deleteUser() Affected Rows number: ${affectedRows}`);
+            resolve(affectedRows === 1);
             
         });
 

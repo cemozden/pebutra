@@ -31,7 +31,7 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
         ipcMain.on('performLogin', (event : any, user : User) => {
 
             const loginValidation = LoginValidation(user);
-
+            const _username = user.username;
             loginValidation.validateAll().then(validationResults => {
                 const failedValidations = validationResults.filter(vr => !vr.valid);
             
@@ -45,15 +45,18 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
                                 const language = configManager.getDefaultLanguage();
                                 event.sender.send('performLoginError', language.validation.login.loginFailed); 
                             }
-                            else mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
+                            else {
+                                logger.info(`${_username} is logged in to the system.`);
+                                mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
+                            }
                         })
                         .catch((err : Error) => {
-                            logger.error(`Perform Login: ${err.message}`);
+                            logger.error(`[UserExist Promise] Failed: ${err.message}`);
                             event.sender.send('performLoginError', err.message)
                         });
                 }
             }).catch(reason => {
-                logger.error(reason.toString());
+                logger.error(`[LoginValidation Promise] Failed: ${reason.toString()}`);
 
                 const language = configManager.getDefaultLanguage();
                 const dialogOptions : MessageBoxOptions = {

@@ -11,7 +11,6 @@ export function AddUserValidation(validationObject : User) {
     const userService = new UserServiceImpl();
 
     formValidation.addOrUpdateValidation('username', async vo => {
-        //TODO: Check whether a user exist with the given username.
         const usernameValidationPromise = new Promise<ValidationResult>(async (resolve, reject) => {
             if (vo.username === undefined || vo.username === '') 
             resolve({ validationName : 'username', valid : false, message : language.validation.addUser.nameEmpty });

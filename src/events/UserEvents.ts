@@ -26,27 +26,31 @@ export function UserEvents(io : any, mainWindow : BrowserWindow) {
 
             userService.addUser(user).then(userAdded => {
                 if (userAdded) {
+                    const message = language.addUserSuccessful.replace('${username}', user.username);
                     const dialogOptions : MessageBoxOptions = {
                         type: 'info',
                         buttons: ['Ok'],
                         title: 'Pebutra | ' + language.info,
-                        message: language.addUserSuccessful.replace('${username}', user.username)
+                        message: message
                     };
+                    logger.info(`[Add User] ${message}`);
                     dialog.showMessageBox(null, dialogOptions);
                     event.sender.send('closeModal');
                 }
                 else {
+                    const message = language.addUserFailed.replace('${username}', user.username);
                     const dialogOptions : MessageBoxOptions = {
                         type: 'error',
                         buttons: ['Ok'],
                         title: 'Pebutra | ' + language.error,
-                        message: language.addUserFailed.replace('${username}', user.username)
+                        message: message
                     };
+                    logger.error(`[Add User] ${message}`);
                     dialog.showMessageBox(null, dialogOptions);
                 }
             })
             .catch(reason => {
-                logger.error(`Add User Validations: ${reason.toString()}`);
+                logger.error(`[Add User Promise] Validation Failed: ${reason.toString()}`);
                 const dialogOptions : MessageBoxOptions = {
                     type: 'error',
                     buttons: ['Ok'],
