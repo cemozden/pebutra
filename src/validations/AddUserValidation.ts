@@ -16,7 +16,7 @@ export function AddUserValidation(validationObject : User) {
             if (vo.username === undefined || vo.username === '') 
             resolve({ validationName : 'username', valid : false, message : language.validation.addUser.nameEmpty });
 
-            if (vo.username.match('[^a-zA-Z.]') !== null)
+            if (vo.username.match('[^a-zA-Z.0-9]') !== null)
                 resolve({ validationName : 'username', valid : false, message : language.validation.addUser.usernameSpecialCharacters });
 
             const userExist = await userService.userExist(vo, true);

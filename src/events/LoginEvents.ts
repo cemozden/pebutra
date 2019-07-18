@@ -30,34 +30,28 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
 
         ipcMain.on('performLogin', (event : any, user : User) => {
 
-            const userService = new UserServiceImpl();
-            userService.userExist(user)
-                .then(userExist => {
-                    // If the username or password is wrong, then send a message to the client.
-                    if (!userExist) { 
-                        const language = configManager.getDefaultLanguage();
-                        event.sender.send('performLoginError', language.validation.login.loginFailed); 
-                    }
-                    else {
-                        mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
-                    }
-
-                })
-                .catch((err : Error) => {
-                    logger.error(`Perform Login: ${err.message}`);
-                    event.sender.send('performLoginError', err.message)
-                });
-
-        });
-
-        ipcMain.on('validateLoginForm', async (event : any, user : User) => {
             const loginValidation = LoginValidation(user);
 
             loginValidation.validateAll().then(validationResults => {
-                const failedValidations = validationResults.filter((vr) => !vr.valid);
+                const failedValidations = validationResults.filter(vr => !vr.valid);
             
-                if (failedValidations.length > 0) event.sender.send('loginValidationResult', {validAll : false, validationResults : validationResults});
-                else event.sender.send('loginValidationResult', {validAll : true, validationResults : []});
+                if (failedValidations.length > 0) event.sender.send('loginValidationFailed', validationResults);
+                else {
+                    const userService = new UserServiceImpl();
+                    userService.userExist(user)
+                        .then(userExist => {
+                            // If the username or password is wrong, then send a message to the client.
+                            if (!userExist) { 
+                                const language = configManager.getDefaultLanguage();
+                                event.sender.send('performLoginError', language.validation.login.loginFailed); 
+                            }
+                            else mainWindow.loadURL(`${process.env.EXPRESS_URL}/main`);
+                        })
+                        .catch((err : Error) => {
+                            logger.error(`Perform Login: ${err.message}`);
+                            event.sender.send('performLoginError', err.message)
+                        });
+                }
             }).catch(reason => {
                 logger.error(reason.toString());
 
@@ -71,7 +65,7 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
 
                 dialog.showMessageBox(null, dialogOptions);
             });
-            
+
         });
 
     });
