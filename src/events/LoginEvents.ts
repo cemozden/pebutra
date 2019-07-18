@@ -1,16 +1,15 @@
 import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
 import { LoginValidation } from "../validations/LoginValidation";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, MessageBoxOptions, dialog } from "electron";
 import { User } from "../models/User";
 import { ipcMain } from "electron";
 import { logger } from "../util/Logger";
 import { UserServiceImpl } from "../services/UserService";
-import { ValidationResult } from "../validations/Validation";
 
 const configManager = new YAMLConfigManager();
 
 export function LoginEvent(io : any, mainWindow : BrowserWindow) {
-
+    
     io.of('/login').on('connection', (socket : any) => {
         logger.info('Socket.IO /login connection successful.');
         
@@ -44,7 +43,10 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
                     }
 
                 })
-                .catch((err : Error) => event.sender.send('performLoginError', err.message));
+                .catch((err : Error) => {
+                    logger.error(`Perform Login: ${err.message}`);
+                    event.sender.send('performLoginError', err.message)
+                });
 
         });
 
@@ -56,6 +58,18 @@ export function LoginEvent(io : any, mainWindow : BrowserWindow) {
             
                 if (failedValidations.length > 0) event.sender.send('loginValidationResult', {validAll : false, validationResults : validationResults});
                 else event.sender.send('loginValidationResult', {validAll : true, validationResults : []});
+            }).catch(reason => {
+                logger.error(reason.toString());
+
+                const language = configManager.getDefaultLanguage();
+                const dialogOptions : MessageBoxOptions = {
+                    type: 'error',
+                    buttons: ['Ok'],
+                    title: 'Pebutra | ' + language.error,
+                    message: reason.toString()
+                };
+
+                dialog.showMessageBox(null, dialogOptions);
             });
             
         });

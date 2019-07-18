@@ -3,6 +3,7 @@ import { User } from "../models/User";
 import { UserServiceImpl } from "../services/UserService";
 import { AddUserValidation } from "../validations/AddUserValidation";
 import { YAMLConfigManager } from "../configmanagement/YAMLConfigManager";
+import { logger } from "../util/Logger";
 
 const configManager = new YAMLConfigManager();
 
@@ -23,7 +24,7 @@ export function UserEvents(io : any, mainWindow : BrowserWindow) {
             const userService = new UserServiceImpl();
             const language = configManager.getDefaultLanguage();
 
-            userService.addUser(user).then((userAdded) => {
+            userService.addUser(user).then(userAdded => {
                 if (userAdded) {
                     const dialogOptions : MessageBoxOptions = {
                         type: 'info',
@@ -44,7 +45,8 @@ export function UserEvents(io : any, mainWindow : BrowserWindow) {
                     dialog.showMessageBox(null, dialogOptions);
                 }
             })
-            .catch((reason) => {
+            .catch(reason => {
+                logger.error(`Add User Validations: ${reason.toString()}`);
                 const dialogOptions : MessageBoxOptions = {
                     type: 'error',
                     buttons: ['Ok'],
