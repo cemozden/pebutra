@@ -127,7 +127,7 @@ describe('Form Validations', () => {
 
         it('should validate all', async () => {
             const user : User = {
-                username : 'cem',
+                username : 'test12345',
                 emailAddress : 'cem@cemozden.com',
                 name : 'Cem',
                 surname : 'Ozden',

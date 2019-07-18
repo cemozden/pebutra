@@ -62,32 +62,18 @@
               $('#password').removeClass('is-invalid');
           });
 
-          ipcRenderer.on('loginValidationResult', (event, result) => {
+          ipcRenderer.on('loginValidationFailed', (event, result) => {
 
             $('#username').removeClass('is-invalid');
             $('#password').removeClass('is-invalid');
 
-            if (!result.validAll) {
-                const validationResults = result.validationResults;
-                
-                for (vr of validationResults) {
-                  if (!vr.valid) {
-                    $('#' + vr.validationName).addClass('is-invalid');
-                    $('#' + vr.validationName + 'InvalidFeedback').text(vr.message);
-                  }
-                  
-                }
+            for (vr of result) {
+              if (!vr.valid) {
+                $('#' + vr.validationName).addClass('is-invalid');
+                $('#' + vr.validationName + 'InvalidFeedback').text(vr.message);
+              }              
+            }
 
-              }
-              else {
-                  //TODO: Implement login process.
-                  const user = {
-                    username : $('#username').val(),
-                    password : $('#password').val()
-                  };
-
-                  ipcRenderer.send('performLogin', user);
-              }
           });
 
           ipcRenderer.on('performLoginError', (event, result) => { 
@@ -141,7 +127,7 @@
                   password : $('#password').val()
                 };
 
-                ipcRenderer.send('validateLoginForm', user);
+                ipcRenderer.send('performLogin', user);
             });
 
             // Add User JS settings
