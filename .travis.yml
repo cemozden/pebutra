@@ -10,6 +10,5 @@ before_script:
   - mysql -u root -e "CREATE USER 'pebadmin'@'localhost' IDENTIFIED BY 'p3butr4';"
   - mysql -u root -e "GRANT ALL PRIVILEGES ON PEBUTRA_TEST.* TO 'pebadmin'@'localhost';"
   - mysql -u root PEBUTRA_TEST < pebutra_test.sql
-  - npm run-script build
 install : 
   - npm install
