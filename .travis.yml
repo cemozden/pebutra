@@ -8,7 +8,7 @@ before_script:
   - wget https://raw.githubusercontent.com/cemozden/pebutra/development/sql/pebutra_test.sql
   - mysql -u travis -e "CREATE DATABASE PEBUTRA_TEST;"
   - mysql -u travis -e "CREATE USER 'pebadmin'@'localhost' IDENTIFIED BY 'p3butr4';"
-  - mysqk -u travis -e "GRANT ALL PRIVILEGES ON PEBUTRA_TEST.* TO 'username'@'localhost';"
+  - mysql -u travis -e "GRANT ALL PRIVILEGES ON PEBUTRA_TEST.* TO 'username'@'localhost';"
   - mysql -u travis PEBUTRA_TEST < pebutra_test.sql
   - npm run-script build
 install : 
