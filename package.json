@@ -7,10 +7,9 @@
     "clean": "rimraf dist/",
     "copyassets": "node copy-assets.js",
     "start": "NODE_ENV=development electron .",
-    "build": "npm run-script clean && tsc && npm run-script copyassets && npm test",
-    "buildrun": "npm run-script build && npm start",
+    "buildrun": "npm test && npm start",
     "copyrun": "npm run-script copyassets && npm start",
-    "test": "NODE_ENV=test node dist/run_tests.js"
+    "test": "NODE_ENV=test npm run-script clean && tsc && npm run-script copyassets && node dist/run_tests.js"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
