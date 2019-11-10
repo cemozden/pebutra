@@ -5,7 +5,7 @@ dist : xenial
 services:
   mysql
 before_script:
-  - wget https://github.com/cemozden/pebutra/blob/development/sql/pebutra_test.sql
+  - wget https://raw.githubusercontent.com/cemozden/pebutra/development/sql/pebutra_test.sql
   - mysql -u travis -e "CREATE DATABASE PEBUTRA_TEST;"
   - mysql -u travis -e "CREATE USER 'pebadmin'@'localhost' IDENTIFIED BY 'p3butr4';"
   - mysql -u travis PEBUTRA_TEST < pebutra_test.sql
