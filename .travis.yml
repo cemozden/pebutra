@@ -1,6 +1,7 @@
 language : node_js
 node_js:
   - "node"
+os : linux
 dist : xenial
 services:
   mysql
@@ -12,3 +13,9 @@ before_script:
   - mysql -u root PEBUTRA_TEST < pebutra_test.sql
 install : 
   - npm install
+branches:
+  only:
+    - development
+  except:
+    - master
+cache : npm
