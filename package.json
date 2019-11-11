@@ -6,11 +6,10 @@
   "scripts": {
     "clean": "rimraf dist/",
     "copyassets": "node copy-assets.js",
-    "start": "NODE_ENV=production electron .",
-    "build": "npm run-script clean && tsc && npm run-script copyassets && npm test",
-    "buildrun": "npm run-script build && npm start",
-    "copyrun" : "npm run-script copyassets && npm start",
-    "test": "NODE_ENV=test node dist/run_tests.js"
+    "start": "NODE_ENV=development electron .",
+    "buildrun": "npm test && npm start",
+    "copyrun": "npm run-script copyassets && npm start",
+    "test": "NODE_ENV=test npm run-script clean && tsc && npm run-script copyassets && node dist/run_tests.js"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -20,7 +19,9 @@
     "@types/node": "^12.0.10",
     "electron": "^3.0.6",
     "electron-builder": "^20.28.4",
-    "electron-mocha": "^6.0.4"
+    "electron-mocha": "^6.0.4",
+    "rimraf": "^2.7.1",
+    "tsc": "^1.20150623.0"
   },
   "dependencies": {
     "chai": "^4.2.0",
@@ -35,9 +36,9 @@
     "mustache": "^3.0.1",
     "mustache-express": "^1.2.8",
     "mysql": "^2.17.1",
-    "rimraf": "^2.6.3",
     "shelljs": "^0.8.3",
     "socket.io": "^2.2.0",
+    "typescript": "^3.7.2",
     "winston": "3.2.1"
   },
   "repository": {
@@ -49,6 +50,6 @@
     "budget",
     "tracker"
   ],
-  "author": "Gauton",
+  "author": "Cem Ozden",
   "license": "MIT"
 }
